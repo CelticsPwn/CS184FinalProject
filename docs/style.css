@@ -1,0 +1,147 @@
+table {
+  margin: auto;
+  border-collapse: collapse;
+  max-width: 60%;
+  }
+
+  td, th {
+  border: none;
+  text-align: center;
+  padding: 8px;
+  }
+
+  tr:nth-child(even) {
+  background-color: #F5F5F5;
+}
+.row {
+  margin: auto;
+  display: flex;
+  max-width: 60%
+}
+
+iframe {
+  margin-left: auto;
+  margin-right: auto;
+  display: block;
+}
+
+.column {
+  flex: 100%;
+  padding: 5px;
+}
+
+.post {
+  margin-top: 125px;
+  /* overflow: auto; */
+}
+
+.title {
+  text-align: center;
+  margin-bottom: 3rem
+}
+
+.date {
+  margin-bottom: 2rem color: #aaa;
+  font-weight: 320;
+  font-size: 1.4rem;
+  text-align: center;
+  display: block;
+  margin-bottom: 6rem;
+  letter-spacing: 1px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 40px auto;
+  text-decoration: none;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  color: #222;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  width: 50%;
+}
+
+code {
+  background-color: #F5F5F5;
+  border-radius: 2px;
+}
+
+a {
+  color: #5694f1;
+  text-decoration: none;
+  font-weight: 310;
+  width: 80%;
+  margin: auto;
+}
+
+p {
+  line-height: 1.7;
+  color: #666;
+  font-weight: 320;
+  margin-bottom: 20px;
+  letter-spacing: .4px;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  width: 60%;
+  margin: auto;
+}
+
+ol li {
+  line-height: 1.7;
+  color: #666;
+  font-weight: 320;
+  margin-bottom: 20px;
+  letter-spacing: .4px;
+  display: block;
+  margin-block-start: 1em;
+  margin-block-end: 1em;
+  margin-inline-start: 0px;
+  margin-inline-end: 0px;
+  width: 60%;
+  margin: auto;
+}
+
+.item {
+  padding: 2px 8px;
+  border-radius: 3px;
+  font-size: 1.1rem;
+  background: #ededed;
+  color: #666;
+  letter-spacing: 1px;
+  margin: 3px 1px;
+  text-decoration: none;
+  display: inline-block
+}
+
+footer {
+  padding-bottom: 5%;
+}
+
+img {
+  padding-top: 2%;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 60vw;
+}
+
+#details {
+  font-weight: normal;
+}
+
+figcaption {
+  text-align: center;
+  padding-top: 2px;
+  font-style: italic;
+  font-weight: lighter;
+  max-width: 40%;
+  margin-left: auto;
+  margin-right: auto;
+}
