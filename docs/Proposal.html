@@ -21,13 +21,37 @@
 
 <body>
 
-<h1>CS 184: Computer Graphics and Imaging, Spring 2020</h1>
-<h2>Final Project Proposal</h2>
-<span class="date">Kenny Chen, Leonardo Tang, Lawrence Zhao</span>
-<h3>Problem Description</h3>
-<h3>Goals and Deliverables</h3>
-<h3>Schedule</h3>
-<h3>Resources</h3>
+<h1>Implementing a Black Hole Raytracer</h1>
+<h4>Team Members: Kenny Chen, Leonardo Tang, Lawrence Zhao</h4>
+<p>Our project is inspired by the renderings of a black hole in the movie <i>Interstellar</i> and the work that several scientists and engineers had to grow through to make arguably the most impressive representation of a black hole at its time. We hope to take the Pathtracer we made in Project 3-1 and apply the necessary changes needed to make it appropriate for this task. The final product (which we may or may not be able to reach) will be an animated black hole.</p>
+<h2>Problem Description</h2>
+<p>description</p>
+<h2>Goals and Deliverables</h2>
+<p>Ultimately, we hope to be able to create images that resemble those of the black hole from <i>Interstellar</i>, seen below. The quality of the image will be difficult to quantify, but it should meet a common sense baseline for accuracy. In terms of performance, we hope to be able to complete these renders in a short amount of time, essentially 5 minutes or less. </p>
+
+<div align="middle">
+  <table style="width=100%">
+    <tr>
+      <td>
+        <img src="images/Interstellar.jpg" align="middle" width="1071px"/>
+        <figcaption align="middle">Black Hole from <i>Interstellar</i></figcaption>
+      </td>
+    </tr>
+  </table>
+</div>
+<p>For our Milestone Deliverable, we plan to deliver a quality rendering of a Schwarzschild black hole. For our Final Deliverable, we plan to deliver a quality rendering of a Schwarzschild black hole with its accretion disk. </p>
+<p>In completing this project, we hope to be able to understand the differences that comes with ray-tracing when light is allowed to bend. We also hope to be able to understand how accurate the visual representation of black holes in media, like <i>Interstellar</i>, is. </p>
+<p>Should we get ahead to schedule, we hope to be able to model the physics of the black hole as it changes over time, which will allow us to create animations of the black hole. </p>
+
+<h2>Schedule</h2>
+<p>Week 1: Understand physics and caveats with ray-tracing a black hole.</p>
+<p>Week 2: Implement rendering of Schwarzschild black hole.</p>
+<p>Week 3: Implement rendering of accretion disc. </p>
+<p>Week 4: Implement animation and create spinning black hole video/gif.</p>
+<h2>Resources</h2>
+<p>The paper that the scientists and engineers who worked on <i>Interstellar</i> wrote can be found <a target="_blank" rel="noopener noreferrer" href="https://iopscience.iop.org/article/10.1088/0264-9381/32/6/065001/pdf">here.</a> It is quite dense and the math/physics that underlies the concepts in the paper may be somewhat beyond our reach.</p>
+<p>Instead, we will probably rely more on the work of Riccardo Antonelli, a PhD student Scuola Normale Superiore in Italy. He built a web application that simulates a Schwarzschild black hole, which can be found <a target="_blank" rel="noopener noreferrer" href="http://spiro.fisica.unipd.it/~antonell/schwarzschild/">here</a>, along with a breakdown of the math and physics behind his work. He also provides a more detailed explanation of his methods <a target="_blank" rel="noopener noreferrer" href="http://rantonels.github.io/starless/">here</a>. His open source code can be found <a target="_blank" rel="noopener noreferrer" href="https://github.com/rantonels/starless">here</a>.</p>
+<p>Given that we are utilizing our Pathtracer from Project 3-1, we are seeking to implement the rendering in C++. This should be able to allow for the performance boost over Antonelli's, which is in Python. However, it is also difficult to say how the tradeoffs between the unique functions in Numpy and using a lower level language like C++ will compare. In terms of software, we don't plan to use anything other than our personal computers and the instructional machines. </p>
 
 </div>
 
