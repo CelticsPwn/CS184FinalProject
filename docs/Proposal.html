@@ -29,12 +29,12 @@
   <div class="post">
     <h1 align="middle">Implementing a Black Hole Raytracer</h1>
     <span class="date">Team Members: Kenny Chen, Leonardo Tang, Lawrence Zhao</span>
-    <p>Our project is inspired by the renderings of a black hole in the movie <i>Interstellar</i> and the work that several scientists and engineers had to grow through to make arguably the most impressive representation of a black hole at its time. We hope to take the Pathtracer we made in Project 3-1 and apply the necessary changes needed to make it appropriate for this task. The final product (which we may or may not be able to reach) will be an animated black hole.</p>
+    <p>Our project is inspired by the renderings of the black hole Gargantua in the movie <i>Interstellar</i> and the work that several scientists and engineers went through to make arguably the most impressive representation of a black hole at its time. We hope to take the Pathtracer we made in Project 3-1 and apply the necessary changes needed to make it appropriate for this task. The final product (which we may or may not be able to reach) will be an animated black hole.</p>
     <h2>Problem Description</h2>
     <p>Here we would like to solve the problem of realistic black hole rendering. This problem is 
       important because the visualization of black holes provide interesting scientific insights into their
       behaviors. Furthermore, the ability to render black holes is also applicable in an artistic way,
-      as was shown in <i>Interstellar</i>. We anticipate that some challenges will include understanding 
+      as was shown <i>Interstellar</i>. We anticipate that some challenges will include understanding 
       some of the equations, as none of us have advanced physics backgrounds, and rendering time, 
       as using a particle-based approach will require a large number of particles for realistic rendering.
       Our current idea is to use some shader programs to manipulate a texture to create the distortion
@@ -60,7 +60,7 @@
     <h2>Resources</h2>
     <p>The paper that the scientists and engineers who worked on <i>Interstellar</i> wrote can be found <a target="_blank" rel="noopener noreferrer" href="https://iopscience.iop.org/article/10.1088/0264-9381/32/6/065001/pdf">here.</a> It is quite dense and the math/physics that underlies the concepts in the paper may be somewhat beyond our reach.</p>
     <p>Instead, we will probably rely more on the work of Riccardo Antonelli, a PhD student Scuola Normale Superiore in Italy. He built a web application that simulates a Schwarzschild black hole, which can be found <a target="_blank" rel="noopener noreferrer" href="http://spiro.fisica.unipd.it/~antonell/schwarzschild/">here</a>, along with a breakdown of the math and physics behind his work. He also provides a more detailed explanation of his methods <a target="_blank" rel="noopener noreferrer" href="http://rantonels.github.io/starless/">here</a>. His open source code can be found <a target="_blank" rel="noopener noreferrer" href="https://github.com/rantonels/starless">here</a>.</p>
-    <p>Given that we are utilizing our Pathtracer from Project 3-1, we are seeking to implement the rendering in C++. This should be able to allow for the performance boost over Antonelli's, which is in Python. However, it is also difficult to say how the tradeoffs between the unique functions in Numpy and using a lower level language like C++ will compare. In terms of software, we don't plan to use anything other than our personal computers and the instructional machines. </p>
+    <p>Given that we are utilizing our Pathtracer from Project 3-1, we are seeking to implement the rendering in C++. This should be able to allow for the performance boost over Antonelli's, which is in Python. However, it is also difficult to say how the tradeoffs between the unique functions in NumPy and using a lower level language like C++ will compare. In terms of software, we don't plan to use anything other than our personal computers and the instructional machines. </p>
 
   </div>
 
