@@ -11,6 +11,7 @@ let mouseposition = {
 };
 
 // -----------------------------------------------------------------------------
+
 init();
 loop();
 
@@ -48,7 +49,6 @@ function init() {
 
     material = new THREE.ShaderMaterial( {
         uniforms: uniforms,
-        // fragmentShader: document.getElementById( 'rule_ca' ).textContent
         fragmentShader: document.getElementById( current_texture ).textContent,
         vertexShader: document.getElementById( "vertexShader" ).textContent
     } );
@@ -111,10 +111,10 @@ function loop() {
 
 function render() {
     //update uniforms
-    // uniforms.u_frameCount.value++;
-    // uniforms.u_mouse.value.x += ( mouseposition.x - uniforms.u_mouse.value.x );
-    // uniforms.u_mouse.value.y += ( mouseposition.y - uniforms.u_mouse.value.y );
-    // uniforms.u_time.value = performance.now();
+    uniforms.u_frameCount.value++;
+    uniforms.u_mouse.value.x += ( mouseposition.x - uniforms.u_mouse.value.x );
+    uniforms.u_mouse.value.y += ( mouseposition.y - uniforms.u_mouse.value.y );
+    uniforms.u_time.value = performance.now();
     renderer.render( scene, camera );
     renderer.render( scene, camera, rtFront, true );
 }
