@@ -1,6 +1,8 @@
+// width and height of window
 let width = window.innerWidth;
 let height = window.innerHeight;
 
+// file name of shader
 let current_texture = "black_hole";
 let material;
 
@@ -17,6 +19,7 @@ loop();
 
 
 function init() {
+    // initialize some stuff
     renderer = new THREE.WebGLRenderer();
     renderer.setSize( width ,height );
     document.body.appendChild(renderer.domElement);
@@ -33,10 +36,11 @@ function init() {
         stencilBuffer: false
     };
 
+    // initialize buffer and texture
     rtFront = new THREE.WebGLRenderTarget(width, height, parameters);
     var texture = new THREE.TextureLoader().load( 'images/space.jpg' );
 
-    //setup shaderMaterials
+    // setup shaderMaterials, variables passed into shader
     uniforms = {
         u_resolution: { type: "v2", value: new THREE.Vector2(width, height) },
         u_currentTexture: { type: "t", value: rtFront },

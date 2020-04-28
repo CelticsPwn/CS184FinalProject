@@ -27,6 +27,19 @@ uniform int u_frameCount;
 uniform float u_mouseSize;
 uniform int u_paused;
 varying vec2 vUv;
+uniform float u_time;
+
+float M = 0.1;
+
+vec3 rotate(vec3 a)
+{
+    vec3 b = a;
+    float sinT = sin(u_time);
+    float cosT = cos(u_time);
+    b.x = (cosT*a.x)-(sinT*a.z);
+    b.z = (sinT*a.x)+(cosT*a.z);
+    return b;
+}
 
 float v(float xrel, float yrel) {
     // Takes input relative to current pixel and returns pixel value.
