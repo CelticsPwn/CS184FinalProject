@@ -2,8 +2,9 @@
 let width = window.innerWidth;
 let height = window.innerHeight;
 
-// file name of shader
+// file name of shader and img
 let current_texture = "black_hole";
+let img = 'images/stars.jpg';
 let material;
 
 let camera = new THREE.OrthographicCamera();
@@ -38,7 +39,7 @@ function init() {
 
     // initialize buffer and texture
     rtFront = new THREE.WebGLRenderTarget(width, height, parameters);
-    var texture = new THREE.TextureLoader().load( 'images/space.jpg' );
+    var texture = new THREE.TextureLoader().load( img );
 
     // setup shaderMaterials, variables passed into shader
     uniforms = {
