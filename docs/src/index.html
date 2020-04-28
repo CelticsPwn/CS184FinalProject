@@ -7,6 +7,7 @@ body {
 <body>
 
 <script src="libraries/three.min.js"></script>
+<script src="libraries/dat.gui.min.js"></script>
 
 <script id="vertexShader" type="x-shader/x-fragment">
     varying vec2 vUv;
@@ -28,6 +29,10 @@ uniform float u_mouseSize;
 uniform int u_paused;
 varying vec2 vUv;
 uniform float u_time;
+uniform float u_kappa_c;
+uniform float u_gamma_c;
+uniform int u_lens_count;
+uniform float u_lens_mass;
 
 #define NUM_USER_LENSES 10
 
@@ -62,10 +67,6 @@ float v(float xrel, float yrel) {
 
 void main() {
     // Compute convergence and shear effects of continuous matter
-    float     u_kappa_c = .2;
-    float     u_gamma_c = .3;
-    int       u_lens_count = 1;
-    float     u_lens_mass = .1;
     float kc = u_kappa_c;
     float gc = u_gamma_c;
     vec2 scaling = vec2(1.0-kc-gc, 1.0-kc+gc);

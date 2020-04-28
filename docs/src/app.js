@@ -13,7 +13,25 @@ let mouseposition = {
     y: 0
 };
 
+// Predefine some uniforms
+let u_kappa_c = .2;
+let u_gamma_c = .54;
+let u_lens_count = 1;
+let u_lens_mass = .1;
+
 // -----------------------------------------------------------------------------
+// GUI
+// -----------------------------------------------------------------------------
+var obj = {
+    kappa_c: .2, 
+    gamma_c: .2,
+    lens_count: 1,
+    lens_mass: .1
+};
+var g = new dat.GUI();
+// Lensing parameters
+var lenseFolder = g.addFolder("Lensing");
+lenseFolder.add(obj, "kappa_c").min(0).max(10).step(0.25);
 
 init();
 loop();
@@ -43,6 +61,10 @@ function init() {
 
     // setup shaderMaterials, variables passed into shader
     uniforms = {
+        u_lens_count: { type: "f", value: obj.lens_count },
+        u_kappa_c: { type: "f", value: obj.kappa_c },
+        u_gamma_c: { type: "f", value: obj.gamma_c },
+        u_lens_mass: { type: "f", value: obj.lens_mass },
         u_resolution: { type: "v2", value: new THREE.Vector2(width, height) },
         u_currentTexture: { type: "t", value: rtFront },
         u_texture: { type: "t", value: texture },
