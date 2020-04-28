@@ -22,9 +22,11 @@ body {
 uniform vec2 u_resolution;
 uniform vec3 u_mouse;
 uniform sampler2D u_currentTexture;
+uniform sampler2D u_texture;
 uniform int u_frameCount;
 uniform float u_mouseSize;
 uniform int u_paused;
+varying vec2 vUv;
 
 float v(float xrel, float yrel) {
     // Takes input relative to current pixel and returns pixel value.
@@ -35,9 +37,9 @@ float v(float xrel, float yrel) {
     return texture2D(u_currentTexture, xy/u_resolution).a;
 }
 
-    void main() {
-        gl_FragColor = vec4(0, 0, 0, 1);
-    }
+void main() {
+    gl_FragColor = texture2D(u_texture, vUv);
+}
 </script>
 
 <script src="app.js"></script>

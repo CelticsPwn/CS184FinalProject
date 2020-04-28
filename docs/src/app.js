@@ -34,11 +34,13 @@ function init() {
     };
 
     rtFront = new THREE.WebGLRenderTarget(width, height, parameters);
+    var texture = new THREE.TextureLoader().load( 'images/space.jpg' );
 
     //setup shaderMaterials
     uniforms = {
         u_resolution: { type: "v2", value: new THREE.Vector2(width, height) },
         u_currentTexture: { type: "t", value: rtFront },
+        u_texture: { type: "t", value: texture },
         u_mouse: { type: "v3", value: new THREE.Vector3() },
         u_frameCount: { type: "i", value: -1. },
         u_w: { value: width },
