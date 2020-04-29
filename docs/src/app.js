@@ -98,7 +98,7 @@ function onPointerMove(event) {
     let width = window.innerWidth;
     let height = window.innerHeight;
     let ratio = height / width;
-    if (height > width) {
+    if(height > width) {
         mouseposition.x = (event.pageX - width / 2) / width;
         mouseposition.y = (event.pageY - height / 2) / height * -1 * ratio;
     } else {
@@ -111,9 +111,7 @@ function onPointerMove(event) {
     window.addEventListener('pointerup', ()=> {
         uniforms.u_mouse.value.z = 0;
     });
-
-    mouseposition.x = ( event.clientX / window.innerWidth ) * 2;
-    mouseposition.y = ( event.clientY / window.innerHeight ) * -1;
+    console.log(mouseposition);
     event.preventDefault();
 }
 
@@ -150,8 +148,8 @@ function render() {
     uniforms.u_kappa_c.value = lenseObj.kappa_c;
     uniforms.u_gamma_c.value = lenseObj.gamma_c;
     uniforms.u_lens_mass.value = lenseObj.lens_mass;
-    uniforms.u_mouse.value.x = mouseposition.x;
-    uniforms.u_mouse.value.y = mouseposition.y;
+    uniforms.u_mouse.value.x = mouseposition.x + .5;
+    uniforms.u_mouse.value.y = mouseposition.y + .5;
     uniforms.u_time.value = performance.now();
     renderer.render( scene, camera );
     renderer.render( scene, camera, rtFront, true );
