@@ -4,7 +4,7 @@ let height = window.innerHeight;
 
 // file name of shader and img
 let current_texture = "black_hole";
-let img = 'images/stars.jpg';
+let img = 'images/space.jpg';
 let material;
 
 let camera = new THREE.OrthographicCamera();
@@ -13,25 +13,23 @@ let mouseposition = {
     y: 0
 };
 
-// Predefine some uniforms
-let u_kappa_c = .2;
-let u_gamma_c = .54;
-let u_lens_count = 1;
-let u_lens_mass = .1;
-
 // -----------------------------------------------------------------------------
 // GUI
 // -----------------------------------------------------------------------------
-var obj = {
-    kappa_c: .2, 
-    gamma_c: .2,
-    lens_count: 1,
-    lens_mass: .1
-};
+var Lensing = function() {
+    this.kappa_c = .2;
+    this.gamma_c = .2;
+    this.lens_count = 1;
+    this.lens_mass = .1;
+}
 var g = new dat.GUI();
 // Lensing parameters
 var lenseFolder = g.addFolder("Lensing");
-lenseFolder.add(obj, "kappa_c").min(0).max(10).step(0.25);
+var lenseObj = new Lensing();
+lenseFolder.add(lenseObj, "kappa_c", 0, 1).step(.1).listen();
+lenseFolder.add(lenseObj, "gamma_c", 0, .8).step(.1).listen();
+lenseFolder.add(lenseObj, "lens_count", 1, 14).step(1).listen();
+lenseFolder.add(lenseObj, "lens_mass", 0, .1).step(.01).listen();
 
 init();
 loop();
@@ -61,10 +59,10 @@ function init() {
 
     // setup shaderMaterials, variables passed into shader
     uniforms = {
-        u_lens_count: { type: "f", value: obj.lens_count },
-        u_kappa_c: { type: "f", value: obj.kappa_c },
-        u_gamma_c: { type: "f", value: obj.gamma_c },
-        u_lens_mass: { type: "f", value: obj.lens_mass },
+        u_lens_count: { value: lenseObj.lens_count },
+        u_kappa_c: { value: lenseObj.kappa_c },
+        u_gamma_c: { value: lenseObj.gamma_c },
+        u_lens_mass: { value: lenseObj.lens_mass },
         u_resolution: { type: "v2", value: new THREE.Vector2(width, height) },
         u_currentTexture: { type: "t", value: rtFront },
         u_texture: { type: "t", value: texture },
@@ -75,6 +73,8 @@ function init() {
         u_time: { value: performance.now() },
         u_paused: {type: 'i', value: 1},
     };
+
+    console.log(uniforms.u_lens_count);
 
     material = new THREE.ShaderMaterial( {
         uniforms: uniforms,
@@ -97,7 +97,7 @@ function onPointerMove(event) {
     let width = window.innerWidth;
     let height = window.innerHeight;
     let ratio = height / width;
-    if(height > width) {
+    if (height > width) {
         mouseposition.x = (event.pageX - width / 2) / width;
         mouseposition.y = (event.pageY - height / 2) / height * -1 * ratio;
     } else {
@@ -111,6 +111,9 @@ function onPointerMove(event) {
         uniforms.u_mouse.value.z = 0;
     });
 
+    mouseposition.x = ( event.clientX / window.innerWidth ) * 2;
+    mouseposition.y = ( event.clientY / window.innerHeight ) * -1;
+    console.log(mouseposition);
     event.preventDefault();
 }
 
@@ -141,8 +144,14 @@ function loop() {
 function render() {
     //update uniforms
     uniforms.u_frameCount.value++;
-    uniforms.u_mouse.value.x += ( mouseposition.x - uniforms.u_mouse.value.x );
-    uniforms.u_mouse.value.y += ( mouseposition.y - uniforms.u_mouse.value.y );
+    // uniforms.u_mouse.value.x += ( mouseposition.x - uniforms.u_mouse.value.x );
+    // uniforms.u_mouse.value.y += ( mouseposition.y - uniforms.u_mouse.value.y );
+    uniforms.u_lens_count.value = lenseObj.lens_count;
+    uniforms.u_kappa_c.value = lenseObj.kappa_c;
+    uniforms.u_gamma_c.value = lenseObj.gamma_c;
+    uniforms.u_lens_mass.value = lenseObj.lens_mass;
+    uniforms.u_mouse.value.x = mouseposition.x;
+    uniforms.u_mouse.value.y = mouseposition.y;
     uniforms.u_time.value = performance.now();
     renderer.render( scene, camera );
     renderer.render( scene, camera, rtFront, true );
