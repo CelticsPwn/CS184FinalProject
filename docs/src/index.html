@@ -66,6 +66,21 @@ float v(float xrel, float yrel) {
     return texture2D(u_currentTexture, xy/u_resolution).a;
 }
 
+float getLambda(float rs, float dist, float distortion) {
+  return pow(rs, distortion) / pow(dist, distortion);
+}
+
+float sdf(vec3 p, float rs) {
+  return length(p) - rs;
+}
+float sdf(vec2 p, float rs) {
+  return length(p) - rs;
+}
+
+vec3 lerp(vec3 a, vec3 b, float c) {
+  return (a * c + (1. - c) * b);
+}
+
 void main() {
     // Compute convergence and shear effects of continuous matter
     float kc = u_kappa_c;
@@ -123,6 +138,7 @@ void main() {
     gl_FragColor = color;
 
     //gl_FragColor = texture2D(u_texture, vUv);
+
 }
 </script>
 
