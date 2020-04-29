@@ -50,8 +50,55 @@ float v(float xrel, float yrel) {
     return texture2D(u_currentTexture, xy/u_resolution).a;
 }
 
+float getLambda(float rs, float dist, float distortion) {
+  return pow(rs, distortion) / pow(dist, distortion);
+}
+
+float sdf(vec3 p, float rs) {
+  return length(p) - rs;
+}
+float sdf(vec2 p, float rs) {
+  return length(p) - rs;
+}
+
+vec3 lerp(vec3 a, vec3 b, float c) {
+  return (a * c + (1. - c) * b);
+}
+
 void main() {
-    gl_FragColor = texture2D(u_texture, vUv);
+    //Schwarzschild black hole radius
+    // float rs = 0.5;
+    // float r_bend = 1.0;
+    // vec4 blackhole_color = vec4(0., 0., 0., 1.);
+    // float ds = 0.;
+    vec2 shifted_vUv;
+    float dt = u_time / 10000.0;
+    // float distortion = 3.;
+    // //var center = vec2(0.5, 0.5);
+    shifted_vUv.x = mod((vUv.x + dt), 0.99);
+    shifted_vUv.y = vUv.y;
+    //
+    // vec3 pos = vec3(0., 0., -3.0);
+    // vec3 dir = normalize(vec3(shifted_vUv, 1.));
+    // vec3 ray_pos;
+    // float t = 0.0;
+    // ray_pos = pos + dir * t;
+    // for(int i = 0; i < 64; i++) {
+    //   if (sdf(ray_pos, rs) < 0.01) {
+    //     gl_FragColor = blackhole_color;
+    //     break;
+    //   }
+    //   vec3 prevDir = normalize(dir) * dt;
+    //   vec3 verlet_max = normalize(ray_pos) * dt;
+    //   float dist = length(ray_pos);
+    //   float lambda = getLambda(rs, dist, distortion);
+    //   dir = normalize(lerp(prevDir, verlet_max, lambda));
+    //   ray_pos = ray_pos + dir * dt;
+    // }
+    // vec2 ray_pos2D = vec2(ray_pos.x, ray_pos.y);
+    // gl_FragColor = texture2D(u_texture, ray_pos2D);
+    gl_FragColor = texture2D(u_texture, shifted_vUv);
+    //console.log('hi');
 }
 </script>
 
