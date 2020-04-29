@@ -85,7 +85,6 @@ vec3 lerp(vec3 a, vec3 b, float c) {
 }
 
 void main() {
-<<<<<<< HEAD
     float u_distance = .1; // D_L, distance between observer and lens
     float r_s = .01; // r_s, radius of black hole
     float dt = u_time / 10000.;
@@ -95,11 +94,6 @@ void main() {
     vec2 D_S = shifted_vUv - u_mouse.xy; // D_S, distance between viewer and black hole
     vec2 ratio = vec2(u_resolution.y/u_resolution.x, 1.); // Screen resolution ratio
     float rad = length(D_S/ratio); //
-=======
-    vec2 D_S = vUv - u_mouse.xy; // D_S, distance between viewer and black hole
-    vec2 ratio = vec2(u_resolution.y/u_resolution.x, 1.); // Screen resolution ratio
-    float rad = length(D_S/ratio);
->>>>>>> 83492bbaa81b474b9a0bae09fbbe3321aa8d0d52
     // Einstein ring formula I think?
     float deformation = 2. * u_r_s * 1. / pow(rad * pow(u_distance, .5), 2.) * .1;
 
@@ -110,7 +104,7 @@ void main() {
 
     if (rad * u_distance < u_r_s) {
         color = vec4(0, 0, 0, 1.);
-
+    }
     gl_FragColor = color;
 }
 </script>
