@@ -21,15 +21,17 @@ var Lensing = function() {
     this.gamma_c = .2;
     this.lens_count = 1;
     this.lens_mass = .1;
+    this.distance = .1;
+    this.radius = .01;
 }
 var g = new dat.GUI();
 // Lensing parameters
 var lenseFolder = g.addFolder("Lensing");
 var lenseObj = new Lensing();
-lenseFolder.add(lenseObj, "kappa_c", 0, 1).step(.1).listen();
-lenseFolder.add(lenseObj, "gamma_c", 0, .8).step(.1).listen();
-lenseFolder.add(lenseObj, "lens_count", 1, 14).step(1).listen();
-lenseFolder.add(lenseObj, "lens_mass", 0, .1).step(.01).listen();
+lenseFolder.add(lenseObj, "distance", 0.03, 1).step(.01).listen();
+lenseFolder.add(lenseObj, "radius", 0.001, .1).step(.001).listen();
+// lenseFolder.add(lenseObj, "lens_count", 1, 14).step(1).listen();
+// lenseFolder.add(lenseObj, "lens_mass", 0, .1).step(.01).listen();
 
 init();
 loop();
@@ -60,10 +62,10 @@ function init() {
 
     // setup shaderMaterials, variables passed into shader
     uniforms = {
-        u_lens_count: { value: lenseObj.lens_count },
-        u_kappa_c: { value: lenseObj.kappa_c },
-        u_gamma_c: { value: lenseObj.gamma_c },
-        u_lens_mass: { value: lenseObj.lens_mass },
+        u_distance: { value: lenseObj.distance },
+        u_r_s: { value: lenseObj.radius },
+        // u_gamma_c: { value: lenseObj.gamma_c },
+        // u_lens_mass: { value: lenseObj.lens_mass },
         u_resolution: { type: "v2", value: new THREE.Vector2(width, height) },
         u_currentTexture: { type: "t", value: rtFront },
         u_texture: { type: "t", value: texture },
@@ -98,7 +100,7 @@ function onPointerMove(event) {
     let width = window.innerWidth;
     let height = window.innerHeight;
     let ratio = height / width;
-    if (height > width) {
+    if(height > width) {
         mouseposition.x = (event.pageX - width / 2) / width;
         mouseposition.y = (event.pageY - height / 2) / height * -1 * ratio;
     } else {
@@ -111,9 +113,6 @@ function onPointerMove(event) {
     window.addEventListener('pointerup', ()=> {
         uniforms.u_mouse.value.z = 0;
     });
-
-    mouseposition.x = ( event.clientX / window.innerWidth ) * 2;
-    mouseposition.y = ( event.clientY / window.innerHeight ) * -1;
     event.preventDefault();
 }
 
@@ -146,12 +145,12 @@ function render() {
     uniforms.u_frameCount.value++;
     // uniforms.u_mouse.value.x += ( mouseposition.x - uniforms.u_mouse.value.x );
     // uniforms.u_mouse.value.y += ( mouseposition.y - uniforms.u_mouse.value.y );
-    uniforms.u_lens_count.value = lenseObj.lens_count;
-    uniforms.u_kappa_c.value = lenseObj.kappa_c;
-    uniforms.u_gamma_c.value = lenseObj.gamma_c;
-    uniforms.u_lens_mass.value = lenseObj.lens_mass;
-    uniforms.u_mouse.value.x = mouseposition.x;
-    uniforms.u_mouse.value.y = mouseposition.y;
+    uniforms.u_distance.value = lenseObj.distance;
+    uniforms.u_r_s.value = lenseObj.radius;
+    // uniforms.u_gamma_c.value = lenseObj.gamma_c;
+    // uniforms.u_lens_mass.value = lenseObj.lens_mass;
+    uniforms.u_mouse.value.x = mouseposition.x + .5;
+    uniforms.u_mouse.value.y = mouseposition.y + .5;
     uniforms.u_time.value = performance.now();
     renderer.render( scene, camera );
     renderer.render( scene, camera, rtFront, true );
