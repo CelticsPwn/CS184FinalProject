@@ -113,7 +113,6 @@ function onPointerMove(event) {
 
     mouseposition.x = ( event.clientX / window.innerWidth ) * 2;
     mouseposition.y = ( event.clientY / window.innerHeight ) * -1;
-    console.log(mouseposition);
     event.preventDefault();
 }
 
