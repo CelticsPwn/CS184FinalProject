@@ -27,24 +27,26 @@
 
 <body>
   <div class="post">
-    <h1 align="middle">Milestone Deliverable: Black Hole Raymarcher</h1>
+    <h1 align="middle">Milestone Deliverable: Rendering a Black Hole</h1>
     <span class="date">Team Members: Kenny Chen, Leonardo Tang, Lawrence Zhao</span>
+    <p>Upon receiving the feedback on our proposal, we realized that using Pathtracer from Project 3-1 may not be the best approach to rendering a black hole. One suggestion was to implement a ray marcher and use that to implement a black hole. Another suggestion was to implement the rendering through shaders. Ultimately, we decided to go with the latter approach for this milestone deliverable. We took a shader based approach to implement gravitational lensing. </p>
     <h2>Progress</h2>
-    <p>insert progress here</p>
-    <p><a target="_blank" href="src/index.html">demo</a></p>
+    <p>We decided to implement our black hole render in Three.js, which is a javascript library that uses WebGL to render 3D scenes. We uploaded a texture of space as the background and implemented gravitational lensing of light in the form of <a href = "https://en.wikipedia.org/wiki/Einstein_ring">Einstein rings</a>. Below, you can see a demo of our black hole rendering as a web app. There is a clearly defined event horizon that follows your mouse across the screen. In the future, it will be stationary, but it is mobile at the moment in order to demonstrate that our gravitational lensing does indeed work. </p>
+    <p>There are also two parameters that can be modified for different behavior. One is the distance between the camera and the black hole, which makes the black hole appear smaller for larger values. The other is the radius of the event horizon of the black hole, which makes the black hole appear larger for larger values. </p>
+    <p>Our goal for this milestone deliverable was to be able to generate an image of a black hole with a clearly defined event horizon that models the appropriate behavior for light. It appears that we have successfully done that and are right on schedule. </p>
     <h2>Preliminary Results</h2>
-    <p>insert screenshot here</p>
-    <div align="middle">
-      <img src="src/images/space.jpg"/>
-      <figcaption align="middle">caption</figcaption>
-    </div>
+    <iframe width="960" height="569" src="src/black_hole.html"></iframe>
+    <center>You can access a full page version of the web app <a href="src/black_hole.html" target="_blank">here</a>.</center>
     <h2>Updated Schedule</h2>
-    <p>update schedule here</p>
+    <p>Our schedule remains the same as it was in the proposal. sBy the end of this week, we hope to appropriate model the physics and visuals of an accretion disk, which will require the black hole to become stationary. Between then and the final presentation, we hope to be able to implement some rotation and time simulation in order to animate the rendering.</p>
 
     <h2>Video</h2>
-    <iframe width="960" height="440" src="https://www.youtube.com/embed/XAGXk_QBTjM" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe width="960" height="535" src="https://www.youtube.com/embed/1sCLiSIwiuU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     <h2>Slides</h2>
     <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vTx8t56MZyaqHyQqT3taPYDuv3JI-aJPun8K-Ks_ntuRkunreHJAZOy-3sup7Q7wemk14RyfpVSVhXp/embed?start=true&loop=true&delayms=5000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
+
+    <br><br><br>
+    <center><a href="index.html">Return to Home Page</a></center>
 
   </div>
 
