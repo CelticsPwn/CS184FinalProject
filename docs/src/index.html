@@ -94,6 +94,13 @@ void main() {
     int n = u_lens_count;
     const int max_lens_count = 256;
 
+    //Sidescrolling (broken with current lensing)
+    // float dt = u_time / 10000.;
+    // vec2 shifted_vUv;
+    // shifted_vUv.x = mod((vUv.x + dt), 1.);
+    // shifted_vUv.y = vUv.y;
+    //
+    // vec2 position = shifted_vUv;
     vec2 position = vUv;
     position.y *= -1.; // HACK TESTING
 
@@ -136,7 +143,20 @@ void main() {
     color.w = m;
 
     gl_FragColor = color;
-
+    // float rs = 0.5;
+    // vec2 xy = vec2(gl_FragCoord.x / u_resolution.x, gl_FragCoord.y / u_resolution.y);
+    // vec2 offset = vUv - xy;
+    //
+    // float rad = length(vUv) - length(xy);
+    // float dist = rad;
+    // float deformation = 1. / pow(rad * pow(dist, 0.5), 2.) * rad * 2.;
+    // offset = offset * (1. - deformation);
+    // offset += xy;
+    // if (length(offset) < 0.01) {
+    //   gl_FragColor = vec4(0., 0., 0., 1.);
+    // } else {
+    //   gl_FragColor = texture2D(u_texture, offset);
+    // }
     //gl_FragColor = texture2D(u_texture, vUv);
 
 }
