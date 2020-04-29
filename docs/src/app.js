@@ -38,7 +38,11 @@ function init() {
 
     // initialize buffer and texture
     rtFront = new THREE.WebGLRenderTarget(width, height, parameters);
+<<<<<<< HEAD
     var texture = new THREE.TextureLoader().load( 'images/space_pano2.jpg' );
+=======
+    var texture = new THREE.TextureLoader().load( "images/space.jpg" );
+>>>>>>> 19a36f7aca571d8f053973b7811b876b32c740b7
 
     // setup shaderMaterials, variables passed into shader
     uniforms = {
