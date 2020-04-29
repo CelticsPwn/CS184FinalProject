@@ -84,15 +84,20 @@ vec3 lerp(vec3 a, vec3 b, float c) {
 void main() {
     float u_distance = .1; // D_L, distance between observer and lens
     float r_s = .01; // r_s, radius of black hole
-    vec2 D_S = vUv - u_mouse.xy; // D_S, distance between viewer and black hole
+    float dt = u_time / 10000.;
+    vec2 shifted_vUv;
+    shifted_vUv.x = mod(vUv.x + dt, 1.);
+    shifted_vUv.y = vUv.y;
+    vec2 D_S = shifted_vUv - u_mouse.xy; // D_S, distance between viewer and black hole
     vec2 ratio = vec2(u_resolution.y/u_resolution.x, 1.); // Screen resolution ratio
-    float rad = length(D_S/ratio); // 
+    float rad = length(D_S/ratio); //
     // Einstein ring formula I think?
     // float deformation = 1. / pow(rad * pow(u_distance, .5), 2.) * r_s * .1;
     float deformation = 2. * r_s * 1. / pow(rad * pow(u_distance, .5), 2.) * .1;
 
     D_S = D_S * (1. - deformation);
     D_S = D_S + u_mouse.xy;
+    D_S.x = mod(vUv.x - dt, 1.);
     vec4 color = texture2D(u_texture, D_S);
 
     if (rad * u_distance < r_s) {
