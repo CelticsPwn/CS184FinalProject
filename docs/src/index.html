@@ -107,7 +107,6 @@ void main() {
         if( i < NUM_USER_LENSES ) {
             // This is a user-movable lens
             lens = u_mouse.xy;
-            lens.y *= -1;
         }
         // Compute the deflection
         vec2 r = lens - position * inv_scaling;
