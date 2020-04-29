@@ -27,13 +27,16 @@ uniform sampler2D u_currentTexture;
 uniform sampler2D u_texture;
 uniform int u_frameCount;
 uniform float u_mouseSize;
-uniform int u_paused;
-varying vec2 vUv;
+uniform int u_paused; // pause simulation
+varying vec2 vUv; // current position of fragment
 uniform float u_time;
-uniform float u_kappa_c;
-uniform float u_gamma_c;
-uniform int u_lens_count;
-uniform float u_lens_mass;
+// uniform float u_kappa_c;
+// uniform float u_gamma_c;
+// uniform int u_lens_count;
+// uniform float u_lens_mass;
+
+uniform float u_distance; // D_L, distance between observer and lens
+uniform float u_r_s; // r_s, radius of black hole
 
 #define NUM_USER_LENSES 10
 
@@ -82,20 +85,17 @@ vec3 lerp(vec3 a, vec3 b, float c) {
 }
 
 void main() {
-    float u_distance = .1; // D_L, distance between observer and lens
-    float r_s = .01; // r_s, radius of black hole
     vec2 D_S = vUv - u_mouse.xy; // D_S, distance between viewer and black hole
     vec2 ratio = vec2(u_resolution.y/u_resolution.x, 1.); // Screen resolution ratio
-    float rad = length(D_S/ratio); // 
+    float rad = length(D_S/ratio);
     // Einstein ring formula I think?
-    // float deformation = 1. / pow(rad * pow(u_distance, .5), 2.) * r_s * .1;
-    float deformation = 2. * r_s * 1. / pow(rad * pow(u_distance, .5), 2.) * .1;
+    float deformation = 2. * u_r_s * 1. / pow(rad * pow(u_distance, .5), 2.) * .1;
 
     D_S = D_S * (1. - deformation);
     D_S = D_S + u_mouse.xy;
     vec4 color = texture2D(u_texture, D_S);
 
-    if (rad * u_distance < r_s) {
+    if (rad * u_distance < u_r_s) {
         color = vec4(0, 0, 0, 1.);
     }
 
