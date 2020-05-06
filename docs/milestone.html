@@ -32,7 +32,9 @@
     <p>Upon receiving the feedback on our proposal, we realized that using Pathtracer from Project 3-1 may not be the best approach to rendering a black hole. One suggestion was to implement a ray marcher and use that to implement a black hole. Another suggestion was to implement the rendering using shaders. Ultimately, we decided to go with the latter approach for this milestone deliverable; we took a shader-based approach to implement gravitational lensing. </p>
     <h2>Progress</h2>
     <p>We decided to implement our black hole renderer in Three.js, which is a javascript library that uses WebGL to render 3D scenes. We uploaded a texture of space as the background and implemented gravitational lensing of light in the form of an <a href = "https://en.wikipedia.org/wiki/Einstein_ring">Einstein ring</a>. Below, you can see a demo of our black hole rendering as a web app. There is a clearly defined event horizon that follows your mouse across the screen. In the future, it will be stationary, but it is mobile at the moment in order to demonstrate that our gravitational lensing does indeed work. </p>
+    <br>
     <p>There are also two parameters that can be modified for different behavior. One is the distance between the camera and the black hole, which makes the black hole appear smaller for larger values. The other is the radius of the event horizon of the black hole, which makes the black hole appear larger for larger values. </p>
+    <br>
     <p>Our goal for this milestone deliverable was to be able to generate an image of a black hole with a clearly defined event horizon that models the appropriate behavior for light. It appears that we have successfully done that and are right on schedule. </p>
     <h2>Preliminary Results</h2>
     <iframe width="960" height="569" src="src/black_hole.html"></iframe>
