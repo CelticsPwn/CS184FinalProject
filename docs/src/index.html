@@ -8,6 +8,13 @@ body {
 
 <script src="libraries/three.min.js"></script>
 <script src="libraries/dat.gui.min.js"></script>
+<script src="https://threejs.org/examples/js/postprocessing/EffectComposer.js"></script>
+<script src="https://threejs.org/examples/js/postprocessing/RenderPass.js"></script>
+<script src="https://threejs.org/examples/js/postprocessing/UnrealBloomPass.js"></script>
+<script src="https://threejs.org/examples/js/shaders/CopyShader.js"></script>
+<script src="https://threejs.org/examples/js/postprocessing/ShaderPass.js"></script>
+<script src="https://threejs.org/examples/js/shaders/LuminosityHighPassShader.js"></script>
+<script src="Camera.js"></script>
 
 <script id="vertexShader" type="x-shader/x-fragment">
     varying vec2 vUv;
@@ -85,19 +92,8 @@ vec3 lerp(vec3 a, vec3 b, float c) {
 }
 
 void main() {
-    vec2 D_S = vUv - u_mouse.xy; // D_S, distance between viewer and black hole
-    vec2 ratio = vec2(u_resolution.y/u_resolution.x, 1.); // Screen resolution ratio
-    float rad = length(D_S/ratio);
-    // Einstein ring formula I think?
-    float deformation = 2. * u_r_s * 1. / pow(rad * pow(u_distance, .5), 2.) * .1;
+    vec4 color = texture2D(u_texture, vUv);
 
-    D_S = D_S * (1. - deformation);
-    D_S = D_S + u_mouse.xy;
-    vec4 color = texture2D(u_texture, D_S);
-
-    if (rad * u_distance < u_r_s) {
-        color = vec4(0, 0, 0, 1.);
-      }
     gl_FragColor = color;
 }
 </script>
