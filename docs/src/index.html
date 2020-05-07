@@ -3,13 +3,21 @@
         margin: 0px;
         overflow: hidden;
     }
+    #c {
+        width: 100vw;
+        height: 100vh;
+        display: block;
+        }
+
     </style>
     <body>
+    <canvas id="c"></canvas>
 
     <script src="libraries/three.min.js"></script>
     <script src="libraries/dat.gui.min.js"></script>
     <script src="libraries/OrbitControls.js"></script>
-
+    <script src="app_final.js"></script>
+    
     <script id="vertexShader" type="x-shader/x-fragment">
         varying vec3 vUv;
         void main() {
@@ -43,19 +51,18 @@
         		float deformation = 2. * u_r_s * 1. / pow(rad * pow(u_distance, .5), 2.) * .1;
 
         		D_S = D_S * (1. - deformation);
-        		D_S = D_S + vec3(u_mouse.x, u_mouse.y, 20.2);
-        		vec4 color = textureCube(tCube, D_S);
+                D_S = D_S + vec3(u_mouse.x, u_mouse.y, 20.2);
+                vec4 color = textureCube(tCube, D_S);
 
         		//if (rad * u_distance < u_r_s) {
         		//	color = vec4(0, 0, 0, 1.);
-        		//}
-        		gl_FragColor = textureCube(tCube, vUv);
+                //}
+                color = textureCube(tCube, vUv);
+                gl_FragColor = textureCube(tCube, vUv);
 
             //gl_FragColor = color;
 
         }
     </script>
-
-    <script src="app_final.js"></script>
 
     </body>

@@ -1,130 +1,111 @@
-var container;
+function main() {
+    let canvas = document.querySelector('#c');
+    let renderer = new THREE.WebGLRenderer({canvas});
+    renderer.autoClearColor = false;
 
-var camera, scene, renderer;
+    let fov = 75;
+    let aspect = 2;  // the canvas default
+    let near = 0.1;
+    let far = 100;
+    let camera = new THREE.PerspectiveCamera(fov, aspect, near, far);
+    camera.position.z = 3;
 
-var mouseX = 0, mouseY = 0;
+    // let controls = new OrbitControls(camera, canvas);
+    // controls.target.set(0, 0, 0);
+    // controls.update();
 
-var width = window.innerWidth;
-var height = window.innerHeight;
+    const scene = new THREE.Scene();
 
-var windowHalfX = window.innerWidth / 2;
-var windowHalfY = window.innerHeight / 2;
+    {
+    const color = 0xFFFFFF;
+    const intensity = 1;
+    const light = new THREE.DirectionalLight(color, intensity);
+    light.position.set(-1, 2, 4);
+    scene.add(light);
+    }
 
-document.addEventListener( 'mousemove', onDocumentMouseMove, false );
+    const boxWidth = 1;
+    const boxHeight = 1;
+    const boxDepth = 1;
+    const geometry = new THREE.BoxGeometry(boxWidth, boxHeight, boxDepth);
 
-var Lensing = function() {
-    this.kappa_c = .2;
-    this.gamma_c = .2;
-    this.lens_count = 1;
-    this.lens_mass = .1;
-    this.distance = .1;
-    this.radius = .01;
-}
-//var g = new dat.GUI();
-// Lensing parameters
-//var lenseFolder = g.addFolder("Lensing");
-var lenseObj = new Lensing();
-//lenseFolder.add(lenseObj, "distance", 0.03, 1).step(.01).listen();
-//lenseFolder.add(lenseObj, "radius", 0.001, .1).step(.001).listen();
+    function makeInstance(geometry, color, x) {
+    const material = new THREE.MeshPhongMaterial({color});
 
-init();
-animate();
+    const cube = new THREE.Mesh(geometry, material);
+    scene.add(cube);
 
-function init() {
+    cube.position.x = x;
 
-    container = document.createElement( 'div' );
-    document.body.appendChild( container );
+    return cube;
+    }
 
-    camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 100000 );
-    camera.position.z = 3200;
-
-    var path = "images/cubemap/dark-s_";
-    var format = '.jpg';
-    var urls = [
-        path + 'px' + format, path + 'nx' + format,
-        path + 'py' + format, path + 'ny' + format,
-        path + 'pz' + format, path + 'nz' + format
+    const cubes = [
+    makeInstance(geometry, 0x44aa88,  0),
+    makeInstance(geometry, 0x8844aa, -2),
+    makeInstance(geometry, 0xaa8844,  2),
     ];
 
-    var textureCube = new THREE.CubeTextureLoader().load( urls );
+    const bgScene = new THREE.Scene();
+    let bgMesh;
+    {
+    const loader = new THREE.TextureLoader();
+    const texture = loader.load(
+        'https://threejsfundamentals.org/threejs/resources/images/equirectangularmaps/tears_of_steel_bridge_2k.jpg',
+    );
+    texture.magFilter = THREE.LinearFilter;
+    texture.minFilter = THREE.LinearFilter;
 
-    scene = new THREE.Scene();
-    // scene.background = textureCube;
-    var geometry = new THREE.PlaneBufferGeometry(2, 2);
+    const shader = THREE.ShaderLib.equirect;
+        const material = new THREE.ShaderMaterial({
+        fragmentShader: shader.fragmentShader,
+        vertexShader: shader.vertexShader,
+        uniforms: shader.uniforms,
+        depthWrite: false,
+        side: THREE.BackSide,
+    });
+        material.uniforms.tEquirect.value = texture;
+    const plane = new THREE.BoxBufferGeometry(2, 2, 2);
+    bgMesh = new THREE.Mesh(plane, material);
+    bgScene.add(bgMesh);
+    }
 
-    var shader = "black_hole.html";
-    uniforms = {
-        u_distance: { value: lenseObj.distance },
-        u_r_s: { value: lenseObj.radius },
-        // u_gamma_c: { value: lenseObj.gamma_c },
-        // u_lens_mass: { value: lenseObj.lens_mass },
-        u_resolution: { type: "v2", value: new THREE.Vector2(width, height) },
-        u_currentTexture: { type: "t", value: "rtFront "},
-        u_texture: { type: "t", value: "texture" },
-        u_mouse: { type: "v3", value: new THREE.Vector3() },
-        u_frameCount: { type: "i", value: -1. },
-        u_w: { value: width },
-        u_h: { value: height },
-        u_time: { value: performance.now() },
-        u_paused: {type: 'i', value: 1},
-        tCube: { type: "t", value: textureCube }
-    };
+    function resizeRendererToDisplaySize(renderer) {
+    const canvas = renderer.domElement;
+    const width = canvas.clientWidth;
+    const height = canvas.clientHeight;
+    const needResize = canvas.width !== width || canvas.height !== height;
+    if (needResize) {
+        renderer.setSize(width, height, false);
+    }
+    return needResize;
+    }
 
-    // uniforms[ "tCube" ].value = textureCube;
+    function render(time) {
+    time *= 0.001;
 
-    material = new THREE.ShaderMaterial( {
-        uniforms: uniforms,
-        fragmentShader: document.getElementById( "index" ).textContent,
-        vertexShader: document.getElementById( "vertexShader" ).textContent
-    } );
+    if (resizeRendererToDisplaySize(renderer)) {
+        const canvas = renderer.domElement;
+        camera.aspect = canvas.clientWidth / canvas.clientHeight;
+        camera.updateProjectionMatrix();
+    }
 
-    let mesh = new THREE.Mesh( geometry, material );
+    cubes.forEach((cube, ndx) => {
+        const speed = 1 + ndx * .1;
+        const rot = time * speed;
+        cube.rotation.x = rot;
+        cube.rotation.y = rot;
+    });
 
-    scene.add( mesh );
+    bgMesh.position.copy(camera.position);
+    renderer.render(bgScene, camera);
+    renderer.render(scene, camera);
 
-    renderer = new THREE.WebGLRenderer();
-    renderer.setPixelRatio( window.devicePixelRatio );
-    renderer.setSize( window.innerWidth, window.innerHeight );
-    container.appendChild( renderer.domElement );
+    requestAnimationFrame(render);
+    }
 
-    window.addEventListener( 'resize', onWindowResize, false );
-
+    requestAnimationFrame(render);
 }
 
-function onWindowResize() {
-
-    windowHalfX = window.innerWidth / 2;
-    windowHalfY = window.innerHeight / 2;
-
-    camera.aspect = window.innerWidth / window.innerHeight;
-    camera.updateProjectionMatrix();
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
-
-}
-
-function onDocumentMouseMove( event ) {
-
-    mouseX = ( event.clientX - windowHalfX ) * 10;
-    mouseY = ( event.clientY - windowHalfY ) * 10;
-    uniforms.u_mouse.value.x = mouseX;
-    uniforms.u_mouse.value.y = mouseY;
-    console.log(uniforms.u_mouse);
-}
-
-function animate() {
-
-    requestAnimationFrame( animate );
-
-    render();
-
-}
-
-function render() {
-    camera.position.x += ( mouseX - camera.position.x ) * .05;
-    camera.position.y += ( - mouseY - camera.position.y ) * .05;
-
-    camera.lookAt( scene.position );
-
-    renderer.render( scene, camera );
-}
+main();
+  
