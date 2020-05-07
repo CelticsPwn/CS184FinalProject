@@ -35,35 +35,10 @@ window.onload = ()=>{
   camera.radius = 10;
   dt = 0;
   time = 0;
-  //camera.position.z = 1;
   scene.add(camera);
   loop();
 }
 
-// let camera = new Camera(60, width / height, 1, 10000);
-// camera.radius = 10;
-// dt = 0;
-// time = 0;
-// let mouseposition = {
-//     x: 0,
-//     y: 0
-// };
-//
-// let scene, composer, renderer;
-// composer = new THREE.EffectComposer(renderer);
-// let renderPass = new THREE.RenderPass(scene, camera);
-// let bloomPass = new THREE.UnrealBloomPass(2.0, 3, 0, 0.5);
-// composer.addPass(renderPass);
-// composer.addPass(bloomPass);
-//
-// init();
-// loop();
-
-// window.onbeforeunload = ()=>{
-//   for (let i= 0;i<textures.length;i++)
-//     textures[i].dispose()
-//  }
-//
 let textures;
 let mesh;
 function init() {
@@ -112,7 +87,7 @@ function init() {
 
     let loader = new THREE.FileLoader();
     //Change number of raymarcher steps
-    loader.load('ray_marcher.glsl', (data)=> {
+    loader.load('thanks.glsl', (data)=> {
       let defines = `#define STEP 0.15
       #define NSTEPS 200`
       material.fragmentShader = defines + data
@@ -121,10 +96,6 @@ function init() {
       mesh = new THREE.Mesh(geometry, material)
       scene.add(mesh);
     })
-
-
-    // window.addEventListener( 'resize', onWindowResize, false );
-    // window.addEventListener( 'pointermove', onPointerMove, false );
 }
 const loadTexture = (name, image, interpolation=THREE.LinearFilter ,wrap = THREE.ClampToEdgeWrapping)=>{
     textures[name]= null
@@ -136,45 +107,6 @@ const loadTexture = (name, image, interpolation=THREE.LinearFilter ,wrap = THREE
       textures[name] = texture
     })
   }
-
-// function onPointerMove(event) {
-//     let width = window.innerWidth;
-//     let height = window.innerHeight;
-//     let ratio = height / width;
-//     if(height > width) {
-//         mouseposition.x = (event.pageX - width / 2) / width;
-//         mouseposition.y = (event.pageY - height / 2) / height * -1 * ratio;
-//     } else {
-//         mouseposition.x = (event.pageX - width / 2) / width / ratio;
-//         mouseposition.y = (event.pageY - height / 2) / height * -1;
-//     }
-//     window.addEventListener('pointerdown', ()=> {
-//         uniforms.u_mouse.value.z = 1;
-//     });
-//     window.addEventListener('pointerup', ()=> {
-//         uniforms.u_mouse.value.z = 0;
-//     });
-//     event.preventDefault();
-// }
-
-// function onWindowResize( event ) {
-//     uniforms.u_frameCount.value = 0;
-//     let width = window.innerWidth;
-//     let height = window.innerHeight;
-//
-//     renderer.setSize( width, height );
-//     uniforms.u_resolution.value.x = width;
-//     uniforms.u_resolution.value.y = height;
-//     uniforms.u_mouse.value = new THREE.Vector3();
-//
-//     let parameters = {
-//         minFilter: THREE.NearestFilter,
-//         magFilter: THREE.NearestFilter,
-//         format: THREE.RGBAFormat,
-//         stencilBuffer: false
-//     };
-//     rtFront = new THREE.WebGLRenderTarget(width, height, parameters);
-// }
 
 function loop() {
   dt = (Date.now() - lastframe)/1000;
@@ -204,18 +136,5 @@ function updateUniforms() {
 }
 
 function render() {
-    //update uniforms
-    //uniforms.u_frameCount.value++;
-    // uniforms.u_mouse.value.x += ( mouseposition.x - uniforms.u_mouse.value.x );
-    // uniforms.u_mouse.value.y += ( mouseposition.y - uniforms.u_mouse.value.y );
-    //uniforms.u_distance.value = lenseObj.distance;
-    //uniforms.u_r_s.value = lenseObj.radius;
-    // uniforms.u_gamma_c.value = lenseObj.gamma_c;
-    // uniforms.u_lens_mass.value = lenseObj.lens_mass;
-    //uniforms.u_mouse.value.x = mouseposition.x + .5;
-    //uniforms.u_mouse.value.y = mouseposition.y + .5;
-    //uniforms.u_time.value = performance.now();
-    // renderer.render( scene, camera );
-    // renderer.render( scene, camera, rtFront, true );
     composer.render();
 }
