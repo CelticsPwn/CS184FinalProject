@@ -1,107 +1,107 @@
 <style>
-body {
-    margin: 0px;
-    overflow: hidden;
-}
-</style>
-<body>
-
-<script src="libraries/three.min.js"></script>
-<script src="libraries/dat.gui.min.js"></script>
-
-<script id="vertexShader" type="x-shader/x-fragment">
-    varying vec2 vUv;
-
-    void main()
-    {
-        vUv = uv;
-        vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-        gl_Position = projectionMatrix * mvPosition;
-    }
-</script>
-
-<script id="black_hole" type="x-shader/x-fragment">
-uniform vec2 u_resolution;
-uniform vec3 u_mouse;
-uniform sampler2D u_currentTexture;
-uniform sampler2D u_texture;
-uniform int u_frameCount;
-uniform float u_mouseSize;
-uniform int u_paused; // pause simulation
-varying vec2 vUv; // current position of fragment
-uniform float u_time;
-// uniform float u_kappa_c;
-// uniform float u_gamma_c;
-// uniform int u_lens_count;
-// uniform float u_lens_mass;
-
-uniform float u_distance; // D_L, distance between observer and lens
-uniform float u_r_s; // r_s, radius of black hole
-
-#define NUM_USER_LENSES 10
-
-float M = 0.1;
-
-float rand(float x) {
-    return fract(sin(x * 12.9898) * 43758.5453);
-}
-vec2 rand2(float x) {
-    return vec2(fract(sin(x * 12.9898) * 43758.5453),
-                fract(sin(x * 78.2330) * 43758.5453));
-}
-
-vec3 rotate(vec3 a)
-{
-    vec3 b = a;
-    float sinT = sin(u_time);
-    float cosT = cos(u_time);
-    b.x = (cosT*a.x)-(sinT*a.z);
-    b.z = (sinT*a.x)+(cosT*a.z);
-    return b;
-}
-
-float v(float xrel, float yrel) {
-    // Takes input relative to current pixel and returns pixel value.
-    vec2 xy;
-    xy.x = mod(gl_FragCoord.x + xrel, u_resolution.x);
-    xy.y = mod(gl_FragCoord.y + yrel, u_resolution.y);
-
-    return texture2D(u_currentTexture, xy/u_resolution).a;
-}
-
-float getLambda(float rs, float dist, float distortion) {
-    return pow(rs, distortion) / pow(dist, distortion);
-}
-
-float sdf(vec3 p, float rs) {
-    return length(p) - rs;
-}
-float sdf(vec2 p, float rs) {
-    return length(p) - rs;
-}
-
-vec3 lerp(vec3 a, vec3 b, float c) {
-  return (a * c + (1. - c) * b);
-}
-
-void main() {
-    vec2 D_S = vUv - u_mouse.xy; // D_S, distance between viewer and black hole
-    vec2 ratio = vec2(u_resolution.y/u_resolution.x, 1.); // Screen resolution ratio
-    float rad = length(D_S/ratio);
-    // Einstein ring formula I think?
-    float deformation = 2. * u_r_s * 1. / pow(rad * pow(u_distance, .5), 2.) * .1;
-
-    D_S = D_S * (1. - deformation);
-    D_S = D_S + u_mouse.xy;
-    vec4 color = texture2D(u_texture, D_S);
-
-    if (rad * u_distance < u_r_s) {
-        color = vec4(0, 0, 0, 1.);
-    }
-    gl_FragColor = color;
-}
-</script>
-
-<script src="app.js"></script>
-
-</body>
+	body {
+		margin: 0px;
+		overflow: hidden;
+	}
+	</style>
+	<body>
+	
+	<script src="libraries/three.min.js"></script>
+	<script src="libraries/dat.gui.min.js"></script>
+	
+	<script id="vertexShader" type="x-shader/x-fragment">
+		varying vec2 vUv;
+	
+		void main()
+		{
+			vUv = uv;
+			vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
+			gl_Position = projectionMatrix * mvPosition;
+		}
+	</script>
+	
+	<script id="black_hole" type="x-shader/x-fragment">
+	uniform vec2 u_resolution;
+	uniform vec3 u_mouse;
+	uniform sampler2D u_currentTexture;
+	uniform sampler2D u_texture;
+	uniform int u_frameCount;
+	uniform float u_mouseSize;
+	uniform int u_paused; // pause simulation
+	varying vec2 vUv; // current position of fragment
+	uniform float u_time;
+	// uniform float u_kappa_c;
+	// uniform float u_gamma_c;
+	// uniform int u_lens_count;
+	// uniform float u_lens_mass;
+	
+	uniform float u_distance; // D_L, distance between observer and lens
+	uniform float u_r_s; // r_s, radius of black hole
+	
+	#define NUM_USER_LENSES 10
+	
+	float M = 0.1;
+	
+	float rand(float x) {
+		return fract(sin(x * 12.9898) * 43758.5453);
+	}
+	vec2 rand2(float x) {
+		return vec2(fract(sin(x * 12.9898) * 43758.5453),
+					fract(sin(x * 78.2330) * 43758.5453));
+	}
+	
+	vec3 rotate(vec3 a)
+	{
+		vec3 b = a;
+		float sinT = sin(u_time);
+		float cosT = cos(u_time);
+		b.x = (cosT*a.x)-(sinT*a.z);
+		b.z = (sinT*a.x)+(cosT*a.z);
+		return b;
+	}
+	
+	float v(float xrel, float yrel) {
+		// Takes input relative to current pixel and returns pixel value.
+		vec2 xy;
+		xy.x = mod(gl_FragCoord.x + xrel, u_resolution.x);
+		xy.y = mod(gl_FragCoord.y + yrel, u_resolution.y);
+	
+		return texture2D(u_currentTexture, xy/u_resolution).a;
+	}
+	
+	float getLambda(float rs, float dist, float distortion) {
+		return pow(rs, distortion) / pow(dist, distortion);
+	}
+	
+	float sdf(vec3 p, float rs) {
+		return length(p) - rs;
+	}
+	float sdf(vec2 p, float rs) {
+		return length(p) - rs;
+	}
+	
+	vec3 lerp(vec3 a, vec3 b, float c) {
+	  return (a * c + (1. - c) * b);
+	}
+	
+	void main() {
+		vec2 D_S = vUv - u_mouse.xy; // D_S, distance between viewer and black hole
+		vec2 ratio = vec2(u_resolution.y/u_resolution.x, 1.); // Screen resolution ratio
+		float rad = length(D_S/ratio);
+		// Einstein ring formula I think?
+		float deformation = 2. * u_r_s * 1. / pow(rad * pow(u_distance, .5), 2.) * .1;
+	
+		D_S = D_S * (1. - deformation);
+		D_S = D_S + u_mouse.xy;
+		vec4 color = texture2D(u_texture, D_S);
+	
+		if (rad * u_distance < u_r_s) {
+			color = vec4(0, 0, 0, 1.);
+		}
+		gl_FragColor = color;
+	}
+	</script>
+	
+	<script src="app.js"></script>
+	
+	</body>
