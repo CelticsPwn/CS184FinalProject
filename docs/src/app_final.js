@@ -49,7 +49,8 @@ function init() {
     var textureCube = new THREE.CubeTextureLoader().load( urls );
 
     scene = new THREE.Scene();
-    scene.background = textureCube;
+    // scene.background = textureCube;
+    var geometry = new THREE.PlaneBufferGeometry(2, 2);
 
     var shader = "black_hole.html";
     uniforms = {
@@ -66,10 +67,20 @@ function init() {
         u_h: { value: height },
         u_time: { value: performance.now() },
         u_paused: {type: 'i', value: 1},
-        tCube: {}
+        tCube: { type: "t", value: textureCube }
     };
 
-    uniforms[ "tCube" ].value = textureCube;
+    // uniforms[ "tCube" ].value = textureCube;
+
+    material = new THREE.ShaderMaterial( {
+        uniforms: uniforms,
+        fragmentShader: document.getElementById( "index" ).textContent,
+        vertexShader: document.getElementById( "vertexShader" ).textContent
+    } );
+
+    let mesh = new THREE.Mesh( geometry, material );
+
+    scene.add( mesh );
 
     renderer = new THREE.WebGLRenderer();
     renderer.setPixelRatio( window.devicePixelRatio );
@@ -96,7 +107,9 @@ function onDocumentMouseMove( event ) {
 
     mouseX = ( event.clientX - windowHalfX ) * 10;
     mouseY = ( event.clientY - windowHalfY ) * 10;
-
+    uniforms.u_mouse.value.x = mouseX;
+    uniforms.u_mouse.value.y = mouseY;
+    console.log(uniforms.u_mouse);
 }
 
 function animate() {
