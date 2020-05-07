@@ -94,8 +94,6 @@ function init() {
       disk_texture: {type: "t", value:null}
     };
 
-    console.log(uniforms.u_lens_count);
-
     material = new THREE.ShaderMaterial( {
         uniforms: uniforms,
         fragmentShader: document.getElementById( current_texture ).textContent,
