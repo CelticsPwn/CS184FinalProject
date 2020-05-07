@@ -25,13 +25,13 @@ window.onload = ()=>{
   let renderPass = new THREE.RenderPass(scene, dummy_camera);
   bloomPass = new THREE.UnrealBloomPass( 2, 1.5, 0.4, 0.85);
   bloomPass.threshold = 0.5;
-  bloomPass.strength = 0.25;
-  bloomPass.radius = 0.25;
+  bloomPass.strength = 0.0;
+  bloomPass.radius = 0.0;
   let copyPass = new THREE.ShaderPass(THREE.CopyShader);
   composer.addPass(renderPass);
   composer.addPass(bloomPass);
   init();
-  camera = new Camera(60, window.innerWidth   / window.innerHeight, 1, 10000);
+  camera = new Camera(70, window.innerWidth   / window.innerHeight, 1, 10000);
   camera.radius = 10;
   dt = 0;
   time = 0;
@@ -62,7 +62,7 @@ function init() {
     textures = {};
     loadTexture('bg', 'images/space_pano.jpg');
     loadTexture('star', 'images/space_pano.jpg');
-    loadTexture('disk', 'images/accretion.png');
+    loadTexture('disk', 'images/thankyou.png');
 
 
 
@@ -81,12 +81,13 @@ function init() {
 
     material = new THREE.ShaderMaterial( {
         uniforms: uniforms,
+        //fragmentShader: document.getElementById( current_texture ).textContent,
         vertexShader: document.getElementById( "vertexShader" ).textContent
     } );
 
     let loader = new THREE.FileLoader();
     //Change number of raymarcher steps
-    loader.load('ray_marcher.glsl', (data)=> {
+    loader.load('thanks.glsl', (data)=> {
       let defines = `#define STEP 0.15
       #define NSTEPS 200`
       material.fragmentShader = defines + data
