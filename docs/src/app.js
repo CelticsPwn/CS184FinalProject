@@ -25,8 +25,8 @@ window.onload = ()=>{
   let renderPass = new THREE.RenderPass(scene, dummy_camera);
   bloomPass = new THREE.UnrealBloomPass( 2, 1.5, 0.4, 0.85);
   bloomPass.threshold = 0.5;
-  bloomPass.strength = 0.25;
-  bloomPass.radius = 0.25;
+  bloomPass.strength = 0.0;
+  bloomPass.radius = 0.0;
   let copyPass = new THREE.ShaderPass(THREE.CopyShader);
   composer.addPass(renderPass);
   composer.addPass(bloomPass);
@@ -87,7 +87,7 @@ function init() {
     textures = {};
     loadTexture('bg', 'images/space_pano.jpg');
     loadTexture('star', 'images/space_pano.jpg');
-    loadTexture('disk', 'images/accretion.png');
+    loadTexture('disk', 'images/thankyou.png');
 
 
 

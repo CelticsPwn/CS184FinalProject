@@ -110,7 +110,7 @@ void main()	{
 			if (DISK_IN <= r && r <= DISK_IN+DISK_WIDTH ){
 				float phi = atan(intersection.x, intersection.z);
 				vec3 disk_velocity = vec3(-intersection.x, 0.0, intersection.z) / sqrt(2.0 * (r - 1.0)) / (r * r);
-				phi -= time;
+				phi += time;
 				phi = mod(phi , 2.0 * PI);
 				float disk_gamma = 1.0 / sqrt(1.0 - dot(disk_velocity, disk_velocity));
 				float disk_doppler_factor = disk_gamma * (1.0 + dot(ray_dir / distance, disk_velocity));
