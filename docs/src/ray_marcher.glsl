@@ -3,10 +3,11 @@ uniform float time;
 uniform vec2 resolution;
 
 uniform vec3 cam_pos;
-uniform vec3 cam_dir;
 uniform vec3 cam_up;
 uniform float fov;
 uniform vec3 cam_vel;
+
+vec3 cam_dir = -1. * cam_pos;
 
 const float PI = 3.141592653589793238462643383279;
 const float DEG_TO_RAD = PI / 180.0;
@@ -64,7 +65,7 @@ vec2 screen_to_gl(vec2 screen_size){
 }
 
 vec2 cat_to_spherical(vec3 cartesian_coord){
-	return vec2(atan(cartesian_coord.z,cartesian_coord.x), asin(cartesian_coord.y)) * vec2(1.0/(2.0*PI), 1.0/PI);
+	return vec2(atan(cartesian_coord.z,cartesian_coord.x), asin(cartesian_coord.y)) * vec2(1.0/(2.0*PI), 1.0/PI) + 0.5;
 }
 
 void main()	{
@@ -122,10 +123,11 @@ void main()	{
 			}
 		}
 		old_pos = temp;
+		distance = length(pos);
 	}
 
 	if (distance > 1.0) {
-	    ray_dir = normalize(pos - old_pos);
+	    ray_dir = normalize(pos);
 	    vec2 tex_coord = cat_to_spherical(ray_dir * ROTZ(45.0 * DEG_TO_RAD));
     	vec4 star_color = texture2D(star_texture, tex_coord);
 	    if (star_color.g > 0.0){
@@ -138,6 +140,5 @@ void main()	{
 
     color += texture2D(bg_texture, tex_coord) * 0.25;
   }
-
   gl_FragColor = color*ray_intensity;
 }

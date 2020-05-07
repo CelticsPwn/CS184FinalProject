@@ -6,33 +6,40 @@ let height = window.innerHeight;
 let current_texture = "black_hole";
 let img = 'images/space.jpg';
 let material;
-let scene, composer, renderer;
-let camera;
-let renderPass, bloomPass, shaderPass;
+let scene, composer, renderer, camera;
+let dummy_camera;
 let time;
+let bloomPass;
 
 window.onload = ()=>{
   lastframe = Date.now();
   scene = new THREE.Scene();
   renderer = new THREE.WebGLRenderer();
-  renderer.setClearColor(0x000000, 1.0)
   renderer.setSize( width ,height );
+  renderer.autoClear = false;
   document.body.appendChild(renderer.domElement);
-  camera = new Camera(60, width / height, 1, 10000);
-  camera.radius = 10;
+  dummy_camera = new THREE.Camera();
+  dummy_camera.position.z = 1;
+
+  composer = new THREE.EffectComposer(renderer);
+  let renderPass = new THREE.RenderPass(scene, dummy_camera);
+  bloomPass = new THREE.UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85);
+  bloomPass.threshold = 0.5;
+  bloomPass.strength = 2.0;
+  bloomPass.radius = 1.0;
+  let scenePass = new THREE.RenderPass(scene, dummy_camera)
+  let shaderPass = new THREE.ShaderPass(THREE.CopyShader);
+  shaderPass.renderToScreen  = true;
+  composer.addPass(renderPass);
+  composer.addPass(bloomPass);
+  composer.addPass(shaderPass);
+  init();
+  camera = new Camera(70, window.innerWidth   / window.innerHeight, 1, 10000);
+  camera.radius = 20;
   dt = 0;
   time = 0;
   //camera.position.z = 1;
   scene.add(camera);
-  composer = new THREE.EffectComposer(renderer);
-  renderPass = new THREE.RenderPass(scene, camera);
-  bloomPass = new THREE.UnrealBloomPass(2.0, 3, 0, 0.5);
-  shaderPass = new THREE.ShaderPass(THREE.CopyShader);
-  composer.addPass(renderPass);
-  shaderPass.renderToScreen  =true;
-  composer.addPass(bloomPass);
-  composer.addPass(shaderPass);
-  init();
   loop();
 }
 
@@ -55,10 +62,16 @@ window.onload = ()=>{
 // init();
 // loop();
 
+// window.onbeforeunload = ()=>{
+//   for (let i= 0;i<textures.length;i++)
+//     textures[i].dispose()
+//  }
+//
 let textures;
+let mesh;
 function init() {
 
-    var geometry = new THREE.PlaneBufferGeometry(2, 2);
+    var geometry = new THREE.PlaneGeometry(2, 2);
 
     //setup renderTargets
     let parameters = {
@@ -72,12 +85,13 @@ function init() {
 
     // initialize buffer and texture
     rtFront = new THREE.WebGLRenderTarget(width, height, parameters);
+    textureLoader = new THREE.TextureLoader();
 
     textures = {};
-    textures['bg'] = new THREE.TextureLoader().load( 'images/space_pano.jpg' );
-    textures['star'] = new THREE.TextureLoader().load( 'images/stars.jpg' );
-    //Change to some fiery texture
-    textures['disk'] = new THREE.TextureLoader().load( 'images/red_cloud.jpg' );
+    loadTexture('bg', 'images/space_pano.jpg');
+    loadTexture('star', 'images/space_pano.jpg');
+    loadTexture('disk', 'images/red_cloud.jpg');
+
 
 
     // setup shaderMaterials, variables passed into shader
@@ -86,7 +100,6 @@ function init() {
       resolution: { type: "v2", value: new THREE.Vector2(width, height) },
       cam_pos: {type:"v3", value: new THREE.Vector3()},
       cam_vel: {type:"v3", value: new THREE.Vector3()},
-      cam_dir: {type:"v3", value: new THREE.Vector3()},
       cam_up: {type:"v3", value: new THREE.Vector3()},
       fov: {type:"f", value: 0.0},
       bg_texture: {type: "t", value: null},
@@ -96,15 +109,15 @@ function init() {
 
     material = new THREE.ShaderMaterial( {
         uniforms: uniforms,
-        fragmentShader: document.getElementById( current_texture ).textContent,
+        //fragmentShader: document.getElementById( current_texture ).textContent,
         vertexShader: document.getElementById( "vertexShader" ).textContent
     } );
 
-    loader = new THREE.FileLoader();
+    let loader = new THREE.FileLoader();
     //Change number of raymarcher steps
     loader.load('ray_marcher.glsl', (data)=> {
-      let defines = `#define STEP 0.05
-      #define NSTEPS 600`
+      let defines = `#define STEP 0.15
+      #define NSTEPS 200`
       material.fragmentShader = defines + data
       material.fragmentShader.needsUpdate = true;
       material.needsUpdate = true;
@@ -113,9 +126,19 @@ function init() {
     })
 
 
-    window.addEventListener( 'resize', onWindowResize, false );
+    // window.addEventListener( 'resize', onWindowResize, false );
     // window.addEventListener( 'pointermove', onPointerMove, false );
 }
+const loadTexture = (name, image, interpolation=THREE.LinearFilter ,wrap = THREE.ClampToEdgeWrapping)=>{
+    textures[name]= null
+    textureLoader.load(image, (texture)=> {
+      texture.magFilter = interpolation
+      texture.minFilter = interpolation
+      texture.wrapT = wrap
+      texture.wrapS = wrap
+      textures[name] = texture
+    })
+  }
 
 // function onPointerMove(event) {
 //     let width = window.innerWidth;
@@ -137,29 +160,31 @@ function init() {
 //     event.preventDefault();
 // }
 
-function onWindowResize( event ) {
-    uniforms.u_frameCount.value = 0;
-    let width = window.innerWidth;
-    let height = window.innerHeight;
-
-    renderer.setSize( width, height );
-    uniforms.u_resolution.value.x = width;
-    uniforms.u_resolution.value.y = height;
-    uniforms.u_mouse.value = new THREE.Vector3();
-
-    let parameters = {
-        minFilter: THREE.NearestFilter,
-        magFilter: THREE.NearestFilter,
-        format: THREE.RGBAFormat,
-        stencilBuffer: false
-    };
-    rtFront = new THREE.WebGLRenderTarget(width, height, parameters);
-}
+// function onWindowResize( event ) {
+//     uniforms.u_frameCount.value = 0;
+//     let width = window.innerWidth;
+//     let height = window.innerHeight;
+//
+//     renderer.setSize( width, height );
+//     uniforms.u_resolution.value.x = width;
+//     uniforms.u_resolution.value.y = height;
+//     uniforms.u_mouse.value = new THREE.Vector3();
+//
+//     let parameters = {
+//         minFilter: THREE.NearestFilter,
+//         magFilter: THREE.NearestFilter,
+//         format: THREE.RGBAFormat,
+//         stencilBuffer: false
+//     };
+//     rtFront = new THREE.WebGLRenderTarget(width, height, parameters);
+// }
 
 function loop() {
   dt = (Date.now() - lastframe)/1000;
   time += dt;
+  renderer.setPixelRatio( window.devicePixelRatio);
   renderer.setSize(window.innerWidth, window.innerHeight);
+  composer.setPixelRatio( window.devicePixelRatio);
   composer.setSize(window.innerWidth, window.innerHeight);
   camera.update(dt);
   updateUniforms();
@@ -173,7 +198,6 @@ function updateUniforms() {
   uniforms.resolution.value.x = window.innerWidth;
   uniforms.resolution.value.y = window.innerHeight;
   uniforms.cam_pos.value = camera.position;
-  uniforms.cam_dir.value = camera.direction;
   uniforms.cam_up.value = camera.up;
   uniforms.fov.value = camera.fov;
   uniforms.cam_vel.value = camera.velocity;

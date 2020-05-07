@@ -8,8 +8,10 @@ class Camera extends THREE.PerspectiveCamera {
     this.maxOmega = 0;
     this.velocity = new THREE.Vector3(0, 0, 0);
     this.position.set(0, 0, 1);
+    this.direction = new THREE.Vector3(0,0,1);
     //Needs to show black hole, camera angle can't be 0
-    this.deflection = -5 * Math.PI / 180
+    this.deflection = -5 * Math.PI / 180;
+    this.moving = true;
   }
   set radius(r) {
     this.r = r;
@@ -26,6 +28,7 @@ class Camera extends THREE.PerspectiveCamera {
 
     this.angle += dt * this.omega;
     this.position.set(this.r * Math.sin(this.angle), 0, this.r * Math.cos(this.angle));
+    this.velocity.set(this.omega * Math.cos(this.angle), 0 ,this.omega * -1 * Math.sin(this.angle));
 
     let deflectionMatrix = (new THREE.Matrix4()).makeRotationX(this.deflection);
 

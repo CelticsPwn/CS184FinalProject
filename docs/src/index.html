@@ -21,9 +21,7 @@ body {
 
     void main()
     {
-        vUv = uv;
-        vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
-        gl_Position = projectionMatrix * mvPosition;
+        gl_Position = vec4( position, 1.0 );
     }
 </script>
 
@@ -94,7 +92,7 @@ vec3 lerp(vec3 a, vec3 b, float c) {
 void main() {
     vec4 color = texture2D(u_texture, vUv);
 
-    gl_FragColor = color;
+    gl_FragColor = vec4(1., 0., 0., 1.);
 }
 </script>
 
