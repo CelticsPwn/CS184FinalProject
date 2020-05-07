@@ -12,6 +12,21 @@ var windowHalfY = window.innerHeight / 2;
 
 document.addEventListener( 'mousemove', onDocumentMouseMove, false );
 
+var Lensing = function() {
+    this.kappa_c = .2;
+    this.gamma_c = .2;
+    this.lens_count = 1;
+    this.lens_mass = .1;
+    this.distance = .1;
+    this.radius = .01;
+}
+//var g = new dat.GUI();
+// Lensing parameters
+//var lenseFolder = g.addFolder("Lensing");
+var lenseObj = new Lensing();
+//lenseFolder.add(lenseObj, "distance", 0.03, 1).step(.01).listen();
+//lenseFolder.add(lenseObj, "radius", 0.001, .1).step(.001).listen();
+
 init();
 animate();
 
@@ -38,8 +53,8 @@ function init() {
 
     var shader = "black_hole.html";
     uniforms = {
-        u_distance: { value: "lenseObj.distance" },
-        u_r_s: { value: "lenseObj.radius" },
+        u_distance: { value: lenseObj.distance },
+        u_r_s: { value: lenseObj.radius },
         // u_gamma_c: { value: lenseObj.gamma_c },
         // u_lens_mass: { value: lenseObj.lens_mass },
         u_resolution: { type: "v2", value: new THREE.Vector2(width, height) },

@@ -5,37 +5,53 @@
     }
     </style>
     <body>
-    
+
     <script src="libraries/three.min.js"></script>
     <script src="libraries/dat.gui.min.js"></script>
     <script src="libraries/OrbitControls.js"></script>
-    
+
     <script id="vertexShader" type="x-shader/x-fragment">
         void main() {
-    
+
             vec4 mvPosition = modelViewMatrix * vec4( position, 1.0 );
             vec4 worldPosition = modelMatrix * vec4( position, 1.0 );
-    
+
             vec3 worldNormal = normalize( mat3( modelMatrix[0].xyz, modelMatrix[1].xyz, modelMatrix[2].xyz ) * normal );
-    
+
             gl_Position = projectionMatrix * mvPosition;
-    
+
         }
     </script>
-    
+
     <script id="black_hole" type="x-shader/x-fragment">
         uniform samplerCube tCube;
-    
+        uniform float u_distance;
+        uniform float u_r_s;
+        uniform float u_mouse;
+
         void main() {
-    
-            vec4 color = textureCube( tCube, position );
-    
-            gl_FragColor = color;
-    
+
+            //vec4 color = textureCube( tCube, position );
+            vec3 D_S = position - vec3(u_mouse.x, u_mouse.y, -1.); // D_S, distance between viewer and black hole
+        		vec3 ratio = vec3(u_resolution.y/u_resolution.x, 1., 1.); // Screen resolution ratio
+        		float rad = length(D_S/ratio);
+        		// Einstein ring formula I think?
+        		float deformation = 2. * u_r_s * 1. / pow(rad * pow(u_distance, .5), 2.) * .1;
+
+        		D_S = D_S * (1. - deformation);
+        		D_S = D_S + u_mouse.xy;
+        		vec4 color = textureCube(tCube, D_S);
+
+        		if (rad * u_distance < u_r_s) {
+        			color = vec4(0, 0, 0, 1.);
+        		}
+        		gl_FragColor = color;
+
+            //gl_FragColor = color;
+
         }
     </script>
-    
+
     <script src="app_final.js"></script>
-    
+
     </body>
-    
