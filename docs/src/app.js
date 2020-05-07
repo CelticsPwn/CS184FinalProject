@@ -23,19 +23,16 @@ window.onload = ()=>{
 
   composer = new THREE.EffectComposer(renderer);
   let renderPass = new THREE.RenderPass(scene, dummy_camera);
-  bloomPass = new THREE.UnrealBloomPass( new THREE.Vector2( window.innerWidth, window.innerHeight ), 1.5, 0.4, 0.85);
+  bloomPass = new THREE.UnrealBloomPass( 2, 1.5, 0.4, 0.85);
   bloomPass.threshold = 0.5;
-  bloomPass.strength = 2.0;
-  bloomPass.radius = 1.0;
-  let scenePass = new THREE.RenderPass(scene, dummy_camera)
-  let shaderPass = new THREE.ShaderPass(THREE.CopyShader);
-  shaderPass.renderToScreen  = true;
+  bloomPass.strength = 0.25;
+  bloomPass.radius = 0.25;
+  let copyPass = new THREE.ShaderPass(THREE.CopyShader);
   composer.addPass(renderPass);
   composer.addPass(bloomPass);
-  composer.addPass(shaderPass);
   init();
   camera = new Camera(70, window.innerWidth   / window.innerHeight, 1, 10000);
-  camera.radius = 20;
+  camera.radius = 10;
   dt = 0;
   time = 0;
   //camera.position.z = 1;
@@ -90,7 +87,7 @@ function init() {
     textures = {};
     loadTexture('bg', 'images/space_pano.jpg');
     loadTexture('star', 'images/space_pano.jpg');
-    loadTexture('disk', 'images/red_cloud.jpg');
+    loadTexture('disk', 'images/accretion.png');
 
 
 
