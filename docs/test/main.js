@@ -1,25 +1,25 @@
 /* globals THREE dat Stats Observer*/
 
-let scene, camera, renderer 
+let scene, camera, renderer
 let composer, effectBloom
 let observer, camControl
 window.onload = ()=>{
   //
   lastframe = Date.now()
-  
+
   scene = new THREE.Scene()
 
   renderer = new THREE.WebGLRenderer()
   renderer.setClearColor(0x000000, 1.0)
   renderer.setSize(window.innerWidth, window.innerHeight) // res
   renderer.autoClear = false
-  
 
-  camera = new THREE.Camera() 
+
+  camera = new THREE.Camera()
   camera.position.z = 1
-  
+
   document.body.appendChild( renderer.domElement )
-  
+
   composer = new THREE.EffectComposer(renderer)
   let renderPass = new THREE.RenderPass(scene, camera)
   // strength, kernelSize, sigma, res
@@ -32,10 +32,10 @@ window.onload = ()=>{
   composer.addPass(renderPass)
   composer.addPass(effectBloom)
   composer.addPass(effectCopy)
-  
-  
+
+
   init()
-  
+
   observer = new Observer(60.0, window.innerWidth/window.innerHeight, 1, 80000)
   observer.distance=8
   camControl = new THREE.CameraDragControls(observer, renderer.domElement) // take care of camera view
@@ -43,11 +43,11 @@ window.onload = ()=>{
   scene.add(observer)
   delta = 0
   time = 0
-  
+
   addControlGUI()
   addStatsGUI()
   update()
-  
+
 }
 
  window.onbeforeunload = ()=>{
@@ -64,13 +64,13 @@ const init = ()=>{
   loader = new THREE.FileLoader()
 
   textures = {}
-  
-  
+
+
   loadTexture('bg1','https://cdn.glitch.com/631097e7-5a58-45aa-a51f-cc6b44f8b30b%2Fmilkyway.jpg?1545745139132', THREE.NearestFilter)
   loadTexture('star','https://cdn.glitch.com/631097e7-5a58-45aa-a51f-cc6b44f8b30b%2Fstars.png?1545722529872', THREE.LinearFilter)
   loadTexture('disk','https://cdn.glitch.com/631097e7-5a58-45aa-a51f-cc6b44f8b30b%2FdQ.png?1545846159297', THREE.LinearFilter)
 
-  
+
   // screen frame
   uniforms = {
 		time: { type: "f", value: 0.0 },
@@ -89,27 +89,27 @@ const init = ()=>{
     bg_texture: {type: "t", value: null},
     star_texture: {type: "t", value: null},
     disk_texture: {type: "t", value:null}
-    
+
 	}
-  
+
   material = new THREE.ShaderMaterial( {
 			uniforms: uniforms,
-      
+
 			vertexShader: document.getElementById( 'vertexShader' ).textContent
 		})
   loader.load('0_current_tracer.glsl', (data)=>{
-           let defines = 
+           let defines =
           `#define STEP 0.05
 #define NSTEPS 600
 `
-    
+
     material.fragmentShader = defines+data
     material.fragmentShader.needsUpdate = true
     material.needsUpdate = true
     mesh = new THREE.Mesh( new THREE.PlaneGeometry( 2, 2 ), material )
-  	scene.add( mesh )   
+  	scene.add( mesh )
   })
-  
+
 }
 
 const loadTexture = (name, image, interpolation ,wrap = THREE.ClampToEdgeWrapping)=>{
@@ -129,36 +129,36 @@ const loadTexture = (name, image, interpolation ,wrap = THREE.ClampToEdgeWrappin
 let camconf,effectconf,perfconf,bloomconf,etcconf
 let stats
 const addStatsGUI = ()=>{
-     
+
   stats = new Stats()
   stats.setMode(0)
   stats.domElement.style.position = 'absolute'
   stats.domElement.style.left = '0px'
   stats.domElement.style.top = '0px'
-  document.body.appendChild( stats.domElement ) 
-  
+  document.body.appendChild( stats.domElement )
+
 }
 
 const addControlGUI = ()=>{
-  
+
   // define properties
   perfconf = {
-    resolution : 1.0, 
+    resolution : 1.0,
     quality: 'medium'
   }
-  
+
   bloomconf = {
-    strength :1.0, 
+    strength :1.0,
 	  radius :0.5,
-    threshold:0.6 
+    threshold:0.6
   }
-  
+
   camconf = {
     distance : 10,
     orbit: true,
     fov: 90.0
   }
-  
+
   effectconf = {
     lorentz_transform: true,
     accretion_disk : true,
@@ -166,7 +166,7 @@ const addControlGUI = ()=>{
     doppler_shift : true,
     beaming: true
   }
-  
+
   etcconf = {
     'save as an image': ()=>{
       getImageData = true;
@@ -181,9 +181,9 @@ const addControlGUI = ()=>{
         document.body.removeChild(a)
       });
     }
-    
+
   }
-  
+
   let gui = new dat.GUI()
   let perfFolder = gui.addFolder('Performance')
   perfFolder.add(perfconf, 'resolution', [0.25,0.5,1.0,2.0,4.0])
@@ -191,13 +191,13 @@ const addControlGUI = ()=>{
     let defines = ''
     switch (val){
       case 'low':
-        defines = 
+        defines =
           `#define STEP 0.1
 #define NSTEPS 300
 `
       break
       case 'medium':
-        defines = 
+        defines =
           `#define STEP 0.05
 #define NSTEPS 600
 `
@@ -208,9 +208,9 @@ const addControlGUI = ()=>{
 `
       break
     }
-      
+
     loader.load('0_current_tracer.glsl', (data)=>{
-          
+
       material.fragmentShader = defines+data
       material.fragmentShader.needsUpdate = true
       material.needsUpdate = true
@@ -220,26 +220,26 @@ const addControlGUI = ()=>{
   bloomFolder.add(bloomconf, 'strength', 0.0, 3.0)
   bloomFolder.add(bloomconf, 'radius', 0.0, 1.0)
   bloomFolder.add(bloomconf, 'threshold', 0.0, 1.0)
-  
-  
+
+
   let observerFolder = gui.addFolder('Observer')
   observerFolder.add(camconf, 'distance', 2, 14)
   observerFolder.add(camconf, 'fov', 30, 90)
   observerFolder.add(camconf, 'orbit')
-  
+
   let effectFolder = gui.addFolder('Effects')
   effectFolder.add(effectconf, 'lorentz_transform')
   effectFolder.add(effectconf, 'doppler_shift')
   effectFolder.add(effectconf, 'beaming')
   effectFolder.add(effectconf, 'accretion_disk')
-  effectFolder.add(effectconf, 'use_disk_texture')  
+  effectFolder.add(effectconf, 'use_disk_texture')
   perfFolder.open()
   //bloomFolder.open()
   observerFolder.open()
   effectFolder.open()
-  
+
   gui.add(etcconf, 'save as an image')
-  
+
 }
 
 
@@ -248,10 +248,10 @@ const addControlGUI = ()=>{
 let delta, lastframe
 let time
 const update = ()=>{
-  delta = (Date.now()-lastframe)/1000  
+  delta = (Date.now()-lastframe)/1000
   time += delta
   stats.update()
-  
+
   renderer.setPixelRatio( window.devicePixelRatio*perfconf.resolution)
   renderer.setSize(window.innerWidth, window.innerHeight)
   composer.setSize(window.innerWidth*perfconf.resolution, window.innerHeight*perfconf.resolution)
@@ -259,7 +259,7 @@ const update = ()=>{
   observer.update(delta)
   camControl.update(delta)
   updateUniforms()
-    
+
   render()
   requestAnimationFrame(update)
 
@@ -281,24 +281,24 @@ const updateUniforms = ()=>{
   uniforms.bg_texture.value = textures['bg1']
   uniforms.star_texture.value = textures['star']
   uniforms.disk_texture.value = textures['disk']
-  
-  
+
+
   // controls
   effectBloom.strength = bloomconf.strength
   effectBloom.radius = bloomconf.radius
   effectBloom.threshold = bloomconf.threshold
 
-  
+
   observer.distance = camconf.distance
   observer.moving = camconf.orbit
-  observer.fov = camconf.fov  
+  observer.fov = camconf.fov
   uniforms.lorentz_transform.value = effectconf.lorentz_transform
   uniforms.accretion_disk.value = effectconf.accretion_disk
   uniforms.use_disk_texture.value = effectconf.use_disk_texture
   uniforms.doppler_shift.value = effectconf.doppler_shift
   uniforms.beaming.value = effectconf.beaming
-  
-  
+
+
 }
 
 //little hacks for screenshot
