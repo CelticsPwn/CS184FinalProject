@@ -130,13 +130,13 @@ void main()	{
 	    ray_dir = normalize(pos);
 	    vec2 tex_coord = cat_to_spherical(ray_dir * ROTZ(45.0 * DEG_TO_RAD));
     	vec4 star_color = texture2D(star_texture, tex_coord);
-	    if (star_color.g > 0.0){
-			float star_temperature = MIN_TEMPERATURE + TEMPERATURE_RANGE * star_color.r;
-			float star_velocity = star_color.b - 0.5;
-			float star_doppler_factor = sqrt((1.0 + star_velocity) / (1.0 - star_velocity));
-	    	star_temperature /= ray_doppler_factor*star_doppler_factor;
-	    	color += vec4(temp_to_color(star_temperature), 1.0)* star_color.g;
-	    }
+	    //if (star_color.g > 0.0){
+		//	float star_temperature = MIN_TEMPERATURE + TEMPERATURE_RANGE * star_color.r;
+		//	float star_velocity = star_color.b - 0.5;
+		//	float star_doppler_factor = sqrt((1.0 + star_velocity) / (1.0 - star_velocity));
+	    //	star_temperature /= ray_doppler_factor*star_doppler_factor;
+	    //	color += vec4(temp_to_color(star_temperature), 1.0)* star_color.g;
+	    //}
 
     color += texture2D(bg_texture, tex_coord) * 0.25;
   }
