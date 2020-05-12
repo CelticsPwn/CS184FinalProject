@@ -12,7 +12,7 @@ body {
 <script src="https://threejs.org/examples/js/shaders/CopyShader.js"></script>
 <script src="https://threejs.org/examples/js/postprocessing/ShaderPass.js"></script>
 <script src="https://threejs.org/examples/js/shaders/LuminosityHighPassShader.js"></script>
-<script src="Camera_thanks.js"></script>
+<script id="camera" factor=20 src="Camera_thanks.js"></script>
 
 <script id="vertexShader" type="x-shader/x-fragment">
     varying vec2 vUv;
@@ -23,6 +23,6 @@ body {
     }
 </script>
 
-<script src="thanks.js"></script>
+<script id="raymarcher" disk="images/thankyou.png" src="ray_marcher.js"></script>
 
 </body>

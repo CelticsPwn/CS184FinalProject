@@ -53,13 +53,16 @@ function init() {
         stencilBuffer: false
     };
 
+    var script_tag = document.getElementById('raymarcher')
+    var disk_tex = script_tag.getAttribute("disk");
+
     // initialize buffer and texture
     rtFront = new THREE.WebGLRenderTarget(width, height, parameters);
     textureLoader = new THREE.TextureLoader();
 
     textures = {};
     loadTexture('star', 'images/space_pano.jpg');
-    loadTexture('disk', 'images/accretion.png');
+    loadTexture('disk', disk_tex);
 
 
 
