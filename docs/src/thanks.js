@@ -3,8 +3,6 @@ let width = window.innerWidth;
 let height = window.innerHeight;
 
 // file name of shader and img
-let current_texture = "black_hole";
-let img = 'images/space.jpg';
 let material;
 let scene, composer, renderer, camera;
 let dummy_camera;
@@ -81,13 +79,12 @@ function init() {
 
     material = new THREE.ShaderMaterial( {
         uniforms: uniforms,
-        //fragmentShader: document.getElementById( current_texture ).textContent,
         vertexShader: document.getElementById( "vertexShader" ).textContent
     } );
 
     let loader = new THREE.FileLoader();
     //Change number of raymarcher steps
-    loader.load('thanks.glsl', (data)=> {
+    loader.load('ray_marcher.glsl', (data)=> {
       let defines = `#define STEP 0.15
       #define NSTEPS 200`
       material.fragmentShader = defines + data

@@ -3,8 +3,6 @@ let width = window.innerWidth;
 let height = window.innerHeight;
 
 // file name of shader and img
-let current_texture = "black_hole";
-let img = 'images/space.jpg';
 let material;
 let scene, composer, renderer, camera;
 let dummy_camera;
