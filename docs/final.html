@@ -79,16 +79,27 @@
         Three.js, which lets us set up a simple post processing pipeline. First we use a render pass to render
         the scene to a render target, and then we use a bloom pass to add the bloom filter to the image, which
         we then render to the screen. We chose to use the Unreal Bloom Pass filter, with parameters {exposure = 2,
-         threshold = 0.5, strength = 0.25, and radius = 0.25}.
+        threshold = 0.5, strength = 0.25, and radius = 0.25}.
     </p>
+    <br>
     <p>
         Below we have examples of the rendered model before and after we applied the bloom filter. As you can see,
         before the bloom filter was utilized, the accretion disk looks rather thin and is dominated by a red color.
         After the bloom filter, the accretion disk takes on a much brighter, blinding white color. This is desirable
         since we were aiming for a picture closer to the black hole render in Interstellar, requiring a brighter,
-         harsher light that seems a bit more magical than a mundane red ring.
+        harsher light that seems a bit more magical than a mundane red ring.
     </p>
+    <br>
+    <div class="row">
+        <div class="column">
+            <img src="images/no_bloom.PNG" style="width: 100%;">
+        </div>
+        <div class="column">
+            <img src="images/with_bloom.PNG" style="width: 100%;">
+        </div>
+    </div>
     <h2>Results</h2>
+
     <h3><a href="src/black_hole.html">Final</a></h3>
     <h3><a href="src/thanks.html">Thanks</a></h3>
 
