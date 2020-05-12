@@ -43,6 +43,33 @@
     </p>
 
     <h2>Technical Approach</h2>
+    <p>We detail our technical approach below:</p>
+    <h3>Gravitational Lensing</h3>
+    <p>
+        Gravitational lensing is an effect predicted by Albert Einstein’s general theory of relativity that 
+        describes how light is bent as it travels toward an observer. This effect is most noticeable for 
+        large masses, and is therefore very prominent in black holes.
+    </p>
+    <br>
+    <p>
+        We model this effect using the Einstein ring equation, which describes the deformation with respect 
+        to the mass of the lens, $M$, distance to the lense $D_L$, distance to the source $D_S$, and distance between the 
+        lens and source $D_{LS}$,
+        $$\theta_1=\sqrt{\frac{4GM}{c^2}\frac{D_{LS}}{D_SD_L}}$$
+    </p>
+    <br>
+    <p>
+        where $G$ is the gravitational constant, $M$ is the mass of the lens, and $c$ is the speed of light.
+        We modify this equation a bit to create the effects we desire.
+    </p>
+    <br>
+    <p>
+        In our shader program, we apply this deformation to the vector pointing from the center of the black 
+        hole to the current location being shaded and sample the texture at that location. To model the effect
+        of light not being able to escape past the event horizon, we determine if the texture location being 
+        sampled is outside of the Schwarzchild radius. If it is inside this radius, we just set the color to 
+        black.
+    </p>
     <h2>Results</h2>
     <h3><a href="src/black_hole.html">Final</a></h3>
     <h3><a href="src/thanks.html">Thanks</a></h3>
