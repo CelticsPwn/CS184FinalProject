@@ -60,7 +60,6 @@ function init() {
     textureLoader = new THREE.TextureLoader();
 
     textures = {};
-    loadTexture('bg', 'images/space_pano.jpg');
     loadTexture('star', 'images/space_pano.jpg');
     loadTexture('disk', 'images/accretion.png');
 
@@ -74,7 +73,6 @@ function init() {
       cam_vel: {type:"v3", value: new THREE.Vector3()},
       cam_up: {type:"v3", value: new THREE.Vector3()},
       fov: {type:"f", value: 0.0},
-      bg_texture: {type: "t", value: null},
       star_texture: {type: "t", value: null},
       disk_texture: {type: "t", value:null}
     };
@@ -129,7 +127,6 @@ function updateUniforms() {
   uniforms.cam_up.value = camera.up;
   uniforms.fov.value = camera.fov;
   uniforms.cam_vel.value = camera.velocity;
-  uniforms.bg_texture.value = textures['bg'];
   uniforms.star_texture.value = textures['star'];
   uniforms.disk_texture.value = textures['disk'];
 }
