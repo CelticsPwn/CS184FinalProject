@@ -21,7 +21,6 @@ const float TEMPERATURE_RANGE = 39000.0;
 const float DISK_IN = 2.0;
 const float DISK_WIDTH = 4.0;
 
-uniform sampler2D bg_texture;
 uniform sampler2D star_texture;
 uniform sampler2D disk_texture;
 
@@ -53,9 +52,9 @@ vec3 lorentz_transform_velocity(vec3 ray_v, vec3 cam_v){
 	float speed = length(cam_v);
 	if (speed > 0.0){
 		float dot_prod = dot(ray_v, cam_v);
-	float gamma = 1.0 / sqrt(1.0 - dot_prod);
-	vec3 new_ray_v = (ray_v / gamma - cam_v + (gamma / (gamma + 1.0)) * dot_prod * cam_v) / (1.0 - dot_prod);
-	return new_ray_v;
+		float gamma = 1.0 / sqrt(1.0 - dot_prod);
+		vec3 new_ray_v = (ray_v / gamma - cam_v + (gamma / (gamma + 1.0)) * dot_prod * cam_v) / (1.0 - dot_prod);
+		return new_ray_v;
 	}
 	return ray_v;
 }
@@ -72,8 +71,13 @@ void main()	{
 	float uvfov = tan(fov / 2.0 * DEG_TO_RAD);
 	vec2 uv = screen_to_gl(resolution) * vec2(resolution.x/resolution.y, 1.0);
 	vec3 forward = normalize(cam_dir);
+	forward.y = forward.y - 1.;
+	forward = normalize(forward);
 	vec3 up = normalize(cam_up);
 	vec3 nright = normalize(cross(forward, up));
+	//up = cross(nright, forward);
+	
+
 
 	vec3 pixel_pos = cam_pos + forward + nright * uv.x * uvfov + up * uv.y * uvfov;
 	vec3 ray_dir = lorentz_transform_velocity(normalize(pixel_pos - cam_pos), cam_vel); //lorentz transformation
@@ -137,8 +141,6 @@ void main()	{
 	    	star_temperature /= ray_doppler_factor*star_doppler_factor;
 	    	color += vec4(temp_to_color(star_temperature), 1.0)* star_color.g;
 	    }
-
-    //color += texture2D(bg_texture, tex_coord) * 0.25;
-  }
+  	}
   gl_FragColor = color*ray_intensity;
 }

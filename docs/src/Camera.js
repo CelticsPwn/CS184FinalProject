@@ -35,6 +35,8 @@ class Camera extends THREE.PerspectiveCamera {
     this.position.set(this.r * Math.sin(this.angle), 0, this.r * Math.cos(this.angle));
     this.velocity.set(this.omega * Math.cos(this.angle), 0 ,this.omega * -1 * Math.sin(this.angle));
 
+    //this.up = THREE.crossVectors()
+
     let deflectionMatrix = (new THREE.Matrix4()).makeRotationX(this.deflection);
 
     this.position.applyMatrix4(deflectionMatrix);
