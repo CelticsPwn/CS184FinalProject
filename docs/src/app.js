@@ -77,7 +77,7 @@ function init() {
     //textures['bg'] = new THREE.TextureLoader().load( 'images/space_pano.jpg' );
     textures['star'] = new THREE.TextureLoader().load( 'images/stars.jpg' );
     //Change to some fiery texture
-    textures['disk'] = new THREE.TextureLoader().load( 'images/red_cloud.jpg' );
+    textures['disk'] = new THREE.TextureLoader().load( 'images/accretion.png' );
 
 
     // setup shaderMaterials, variables passed into shader
