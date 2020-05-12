@@ -35,10 +35,10 @@
 
     <h2>Abstract</h2>
     <p>We present an approach to render a realistic black hole in real time on the web using Three.js and
-        GLSL. We use a fully shader-based approach and render a raymarched scene to simulate how light 
-        interacts with the black hole. We make approximations to physically-accurate equations in order 
-        to achieve real-time speeds. 
-        In addition, we demonstrate that adding a postprocessing bloom filter makes our render 
+        GLSL. We use a fully shader-based approach and render a raymarched scene to simulate how light
+        interacts with the black hole. We make approximations to physically-accurate equations in order
+        to achieve real-time speeds.
+        In addition, we demonstrate that adding a postprocessing bloom filter makes our render
         more interesting.
     </p>
 
@@ -46,14 +46,14 @@
     <p>We detail our technical approach below:</p>
     <h3>Gravitational Lensing</h3>
     <p>
-        Gravitational lensing is an effect predicted by Albert Einstein’s general theory of relativity that 
-        describes how light is bent as it travels toward an observer. This effect is most noticeable for 
+        Gravitational lensing is an effect predicted by Albert Einstein’s general theory of relativity that
+        describes how light is bent as it travels toward an observer. This effect is most noticeable for
         large masses, and is therefore very prominent in black holes.
     </p>
     <br>
     <p>
-        We model this effect using the Einstein ring equation, which describes the deformation with respect 
-        to the mass of the lens, $M$, distance to the lense $D_L$, distance to the source $D_S$, and distance between the 
+        We model this effect using the Einstein ring equation, which describes the deformation with respect
+        to the mass of the lens, $M$, distance to the lense $D_L$, distance to the source $D_S$, and distance between the
         lens and source $D_{LS}$,
         $$\theta_1=\sqrt{\frac{4GM}{c^2}\frac{D_{LS}}{D_SD_L}}$$
     </p>
@@ -64,11 +64,29 @@
     </p>
     <br>
     <p>
-        In our shader program, we apply this deformation to the vector pointing from the center of the black 
+        In our shader program, we apply this deformation to the vector pointing from the center of the black
         hole to the current location being shaded and sample the texture at that location. To model the effect
-        of light not being able to escape past the event horizon, we determine if the texture location being 
-        sampled is outside of the Schwarzchild radius. If it is inside this radius, we just set the color to 
+        of light not being able to escape past the event horizon, we determine if the texture location being
+        sampled is outside of the Schwarzchild radius. If it is inside this radius, we just set the color to
         black.
+    </p>
+    <h3>Raymarching</h3>
+    <h3>Extra Physics</h3>
+    <h3>Post Processing</h3>
+    <p>
+        To make the overall visual more appealing and closer to the interstellar rendition, we added a bloom
+        filter to the image produced by our render. To do so, we took advantage of the Effect Composer in
+        Three.js, which lets us set up a simple post processing pipeline. First we use a render pass to render
+        the scene to a render target, and then we use a bloom pass to add the bloom filter to the image, which
+        we then render to the screen. We chose to use the Unreal Bloom Pass filter, with parameters {exposure = 2,
+         threshold = 0.5, strength = 0.25, and radius = 0.25}.
+    </p>
+    <p>
+        Below we have examples of the rendered model before and after we applied the bloom filter. As you can see,
+        before the bloom filter was utilized, the accretion disk looks rather thin and is dominated by a red color.
+        After the bloom filter, the accretion disk takes on a much brighter, blinding white color. This is desirable
+        since we were aiming for a picture closer to the black hole render in Interstellar, requiring a brighter,
+         harsher light that seems a bit more magical than a mundane red ring.
     </p>
     <h2>Results</h2>
     <h3><a href="src/black_hole.html">Final</a></h3>
