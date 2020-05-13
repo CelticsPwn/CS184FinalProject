@@ -80,7 +80,7 @@
     <br>
     <p>Ultimately, we can’t keep on simulating the light forever, but as long as we simulate enough of the light’s path, we’ll have a pretty good idea about  whether it passes through the black hole’s event horizon or collides with the accretion disk. If neither of these cases happen, then it is extremely likely that the ray is simply shooting off into the oblivion of space. There may be a few rays still orbiting the black hole, but this is very unlikely. At the end of our simulation, if the light ray hasn’t intersected anything, we sample from a background texture based on the ray’s last known direction, similar to how environment lighting was done in Project 3-2. </p>
     <h3>Extra Physics</h3>
-    <p>In order to add to the realism of our rendering, we made the viewing camera orbit around the black hole. We kept track of the camera's position relative to the black hole and modeled its physical behavior similar to how we modeled the path of light rays. You can notice how the background changes as time goes by, and that's because you're looking into a different point in space each time. As a result of the viewer's movement, we also attempted to implement some physical effects that would affect the appearance of the black hole in outer space. These include the <a href="https://en.wikipedia.org/wiki/Lorentz_transformation">Lorentz Transformation</a>, the <a href="https://en.wikipedia.org/wiki/Relativistic_Doppler_effect#math_5">Dopper Effect</a>, and <a href="https://en.wikipedia.org/wiki/Relativistic_beaming">Relativistic Beaming</a>. For brevity's sake, we won't get into the details of these physical phenomenon, and ultimately, these features don't appear to make a significant different in the final result, but we thought the were worth a mention.</p>
+    <p>In order to add to the realism of our rendering, we made the viewing camera orbit around the black hole. We kept track of the camera's position relative to the black hole and modeled its physical behavior similar to how we modeled the path of light rays. You can notice how the background changes as time goes by, and that's because you're looking into a different point in space each time. As a result of the viewer's movement, we also attempted to implement some physical effects that would affect the appearance of the black hole in outer space. These include the <a href="https://en.wikipedia.org/wiki/Lorentz_transformation">Lorentz Transformation</a>, the <a href="https://en.wikipedia.org/wiki/Relativistic_Doppler_effect#math_5">Dopper Effect</a>, and <a href="https://en.wikipedia.org/wiki/Relativistic_beaming">Relativistic Beaming</a>. The details can be found in the given links, and ultimately, these features don't appear to make a significant difference in the final result, but we thought they were worth a mention.</p>
     <h3>Post Processing</h3>
     <p>
         To make the overall visual more appealing and closer to the interstellar rendition, we added a bloom
@@ -123,6 +123,32 @@
     <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRTRBFt2ED-MQ_1cfebABJo_wnOInIUbAZNeRgoucvtfrGbMyr63xDmSwgdjaDbx3hWn2wYxZsl2lqj/embed?start=true&loop=true&delayms=5000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
     <h2>References</h2>
+    <p>Examples of black hole shaders we were given in our proposal feedback</p>
+    <ol>
+    	<li>- <a href="https://www.shadertoy.com/view/lstSRS">Shader 1</a></li>
+    	<li>- <a href="https://www.shadertoy.com/view/tsBXW3">Shader 2</a></li>
+    	<li>- <a href="https://www.shadertoy.com/view/MtByRh">Shader 3</a></li>
+    </ol>
+    <p><a href="https://iopscience.iop.org/article/10.1088/0264-9381/32/6/065001"> Published paper by those who helped render the black hole Gargantua in the movie <i>Interstellar</i> (mentioned in Proposal)</a></p>
+    <br>
+    <p><a href="http://spiff.rit.edu/classes/phys240/lectures/grav_lens/grav_lens.html">Gravitational Lensing</a></p>
+    <br>
+    <P>Raymarching resources</p>
+    <ol>
+    	<li>- <a href="https://medium.com/dotcrossdot/raymarching-simulating-a-black-hole-53624a3684d3">Medium article with nice overview</a></li>
+    	<li>- <a href="https://flafla2.github.io/2016/10/01/raymarching.html">More detailed article implemented in Unity</a></li>
+    	<li>- <a href="http://spiro.fisica.unipd.it/~antonell/schwarzschild/">Work of Riccardo Antonelli, a PhD student Scuola Normale Superiore in Italy (mentioned in Proposal)</a></li>
+    </ol>
+    <br>
+    <p>Wikipedia articles</p>
+    <br>
+    <ol>
+    	<li>- <a href="https://en.wikipedia.org/wiki/Lorentz_transformation">Lorentz Transformation</a></li>
+    	<li>- <a href="https://en.wikipedia.org/wiki/Relativistic_Doppler_effect#math_5">Dopper Effect</a></li>
+    	<li>- <a href="https://en.wikipedia.org/wiki/Relativistic_beaming">Relativistic Beaming</a></li>
+    </ol>
+    <p><a href="https://threejs.org/docs/#examples/en/postprocessing/EffectComposer">THREE.js Post Processing Documentation</a></p>
+
     <h2>Contributions of Each Team Member</h2>
 
     <h3>Kenny Chen</h3>
