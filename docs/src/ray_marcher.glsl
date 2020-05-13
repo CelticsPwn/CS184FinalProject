@@ -14,6 +14,9 @@ const float DEG_TO_RAD = PI / 180.0;
 mat3 ROTZ(float a) {
 	return mat3(cos(a), -sin(a), 0, sin(a), cos(a), 0, 0, 0, 1);
 }
+mat3 ROTX(float a) {
+	return mat3(1, 0, 0, 0, cos(a), -sin(a), 0, sin(a), cos(a));
+}
 
 const float MIN_TEMPERATURE = 1000.0;
 const float TEMPERATURE_RANGE = 39000.0;
@@ -71,12 +74,12 @@ void main()	{
 	float uvfov = tan(fov / 2.0 * DEG_TO_RAD);
 	vec2 uv = screen_to_gl(resolution) * vec2(resolution.x/resolution.y, 1.0);
 	vec3 forward = normalize(cam_dir);
-	forward.y = forward.y - 1.;
+	forward = ROTX(10.*PI / 180.) * forward;
 	forward = normalize(forward);
 	vec3 up = normalize(cam_up);
 	vec3 nright = normalize(cross(forward, up));
 	//up = cross(nright, forward);
-	
+
 
 
 	vec3 pixel_pos = cam_pos + forward + nright * uv.x * uvfov + up * uv.y * uvfov;
