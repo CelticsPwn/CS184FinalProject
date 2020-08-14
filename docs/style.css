@@ -108,21 +108,6 @@ ol li {
   margin: auto;
 }
 
-ul li {
-  line-height: 1.7;
-  color: #666;
-  font-weight: 320;
-  margin-bottom: 20px;
-  letter-spacing: .4px;
-  display: block;
-  margin-block-start: 1em;
-  margin-block-end: 1em;
-  margin-inline-start: 0px;
-  margin-inline-end: 0px;
-  width: 60%;
-  margin: auto;
-}
-
 .item {
   padding: 2px 8px;
   border-radius: 3px;

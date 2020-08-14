@@ -37,13 +37,11 @@
     <p>We present an approach to render a realistic black hole in real time on the web using Three.js and
         GLSL. We use a fully shader-based approach and render a raymarched scene to simulate how light
         interacts with the black hole. We make approximations to physically-accurate equations in order
-        to achieve real-time speeds.
-        In addition, we demonstrate that adding a postprocessing bloom filter makes our render
-        more interesting.
+        to achieve maximum realism. In addition, we demonstrate that adding a postprocessing bloom filter makes our render
+        more interesting and aesthetically pleasing.
     </p>
 
     <h2>Technical Approach</h2>
-    <p>We detail our technical approach below:</p>
     <h3>Gravitational Lensing</h3>
     <p>
         Gravitational lensing is an effect predicted by Albert Einstein’s general theory of relativity that
@@ -76,7 +74,13 @@
     <iframe width="960" height="569" src="src/lensing.html"></iframe>
     <center>You can access a full screen of the web app <a href="src/lensing.html" target="_blank">here</a>.</center>
     <h3>Raymarching</h3>
+    <p>In the case of black holes, light does not travel in straight paths. The gravitational force of the black hole is so strong that it bends and curves the path of the light. The light might actually circle around the black hole multiple times. As a result, a traditional ray tracing algorithm is not feasible. Instead, a ray marching algorithm must be used. Ray marching works by having light take steps through a scene until it intersects an object, instead of implicitly calculating how far the ray will travel before it intersects an object, which is what is usually done in ray tracing. This is usually not efficient in traditional scenes when the light does travel in straight paths, as it is more efficient to go directly to the point of intersection instead of taking multiple steps to get there.</p> 
+    <br>
+    <p>However, ray marching allows us to use Verlet integration (or any other physical simulation algorithm) to model the path of the light. Along the light’s path, we can then test for intersection with the accretion disk and the event horizon of the black hole. The event horizon is represented by a specific radius around the black hole’s center, so if the light ever comes within that distance of the black hole, it is sucked in and never returns. In this case, it just returns a black color. If the light intersects the accretion disk, we then sample from a corresponding location on our accretion disk texture, and return that color. We can test for intersection with the accretion disk by detecting if the light ever passes through the XZ plane, as the accretion disk lies in the XZ plane. If the light passes through the XZ within the radius of the accretion disk, but not within the radius of the event horizon, then it has intersected the accretion disk.</p>
+    <br>
+    <p>Ultimately, we can’t keep on simulating the light forever, but as long as we simulate enough of the light’s path, we’ll have a pretty good idea about  whether it passes through the black hole’s event horizon or collides with the accretion disk. If neither of these cases happen, then it is extremely likely that the ray is simply shooting off into the oblivion of space. There may be a few rays still orbiting the black hole, but this is very unlikely. At the end of our simulation, if the light ray hasn’t intersected anything, we sample from a background texture based on the ray’s last known direction, similar to how environment lighting was done in Project 3-2. </p>
     <h3>Extra Physics</h3>
+    <p>In order to add to the realism of our rendering, we made the viewing camera orbit around the black hole. We kept track of the camera's position relative to the black hole and modeled its physical behavior similar to how we modeled the path of light rays. You can notice how the background changes as time goes by, and that's because you're looking into a different point in space each time. As a result of the viewer's movement, we also attempted to implement some physical effects that would affect the appearance of the black hole in outer space. These include the <a href="https://en.wikipedia.org/wiki/Lorentz_transformation">Lorentz Transformation</a>, the <a href="https://en.wikipedia.org/wiki/Relativistic_Doppler_effect#math_5">Dopper Effect</a>, and <a href="https://en.wikipedia.org/wiki/Relativistic_beaming">Relativistic Beaming</a>. The details can be found in the given links, and ultimately, these features don't appear to make a significant difference in the final result, but we thought they were worth a mention.</p>
     <h3>Post Processing</h3>
     <p>
         To make the overall visual more appealing and closer to the interstellar rendition, we added a bloom
@@ -107,18 +111,44 @@
     </div>
     <h2>Results</h2>
 
-    <p>You can access the full screen version of our black hole renderer below. WARNING: rendering a black hole through raymarching requires a significant amount of computational power, so opening the link may slow down your computer. Take note of how the accretion disk orbits around the black hole, how the background moves as the viewing camera orbits around the black hole, and how the black hole distorts the section of the background image behind it. </p>
+    <p>You can access the full screen version of our black hole renderer below. Take note of how the accretion disk orbits around the black hole, how the background moves as the viewing camera orbits around the black hole, and how the black hole distorts the section of the background image behind it. WARNING: rendering a black hole through raymarching requires a significant amount of computational power, so opening the link may slow down your computer.  </p>
     <br>
     <p><a href="src/black_hole.html">Black Hole Renderer</a></p>
     <br>
     <p>For those of you who may not have a computer powerful enough to fully appreciate the final product, you can watch the video below to see a short demo. </p>
 
     <h2>Video</h2>
-    <iframe width="960" height="535" src="https://www.youtube.com/embed/1sCLiSIwiuU" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    <iframe width="960" height="535" src="https://www.youtube.com/embed/QOK_pW94SPs" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
     <h2>Slides</h2>
     <iframe src="https://docs.google.com/presentation/d/e/2PACX-1vRTRBFt2ED-MQ_1cfebABJo_wnOInIUbAZNeRgoucvtfrGbMyr63xDmSwgdjaDbx3hWn2wYxZsl2lqj/embed?start=true&loop=true&delayms=5000" frameborder="0" width="960" height="569" allowfullscreen="true" mozallowfullscreen="true" webkitallowfullscreen="true"></iframe>
 
     <h2>References</h2>
+    <p>Examples of black hole shaders we were given in our proposal feedback</p>
+    <ol>
+    	<li>- <a href="https://www.shadertoy.com/view/lstSRS">Shader 1</a></li>
+    	<li>- <a href="https://www.shadertoy.com/view/tsBXW3">Shader 2</a></li>
+    	<li>- <a href="https://www.shadertoy.com/view/MtByRh">Shader 3</a></li>
+    </ol>
+    <p><a href="https://iopscience.iop.org/article/10.1088/0264-9381/32/6/065001"> Published paper by those who helped render the black hole Gargantua in the movie <i>Interstellar</i> (mentioned in Proposal)</a></p>
+    <br>
+    <p><a href="http://spiff.rit.edu/classes/phys240/lectures/grav_lens/grav_lens.html">Gravitational Lensing</a></p>
+    <br>
+    <P>Raymarching resources</p>
+    <ol>
+    	<li>- <a href="https://medium.com/dotcrossdot/raymarching-simulating-a-black-hole-53624a3684d3">Medium article with nice overview</a></li>
+    	<li>- <a href="https://flafla2.github.io/2016/10/01/raymarching.html">More detailed article implemented in Unity</a></li>
+    	<li>- <a href="http://spiro.fisica.unipd.it/~antonell/schwarzschild/">Work of Riccardo Antonelli, a PhD student Scuola Normale Superiore in Italy (mentioned in Proposal)</a></li>
+    </ol>
+    <br>
+    <p>Wikipedia articles</p>
+    <br>
+    <ol>
+    	<li>- <a href="https://en.wikipedia.org/wiki/Lorentz_transformation">Lorentz Transformation</a></li>
+    	<li>- <a href="https://en.wikipedia.org/wiki/Relativistic_Doppler_effect#math_5">Dopper Effect</a></li>
+    	<li>- <a href="https://en.wikipedia.org/wiki/Relativistic_beaming">Relativistic Beaming</a></li>
+    </ol>
+    <p><a href="https://threejs.org/docs/#examples/en/postprocessing/EffectComposer">THREE.js Post Processing Documentation</a></p>
+
     <h2>Contributions of Each Team Member</h2>
 
     <h3>Kenny Chen</h3>
