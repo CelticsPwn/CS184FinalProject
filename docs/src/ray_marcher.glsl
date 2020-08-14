@@ -7,7 +7,6 @@ uniform vec3 cam_up;
 uniform float fov;
 uniform vec3 cam_vel;
 
-vec3 cam_dir = -1. * cam_pos;
 
 const float PI = 3.141592653589793238462643383279;
 const float DEG_TO_RAD = PI / 180.0;
@@ -73,6 +72,7 @@ vec2 cat_to_spherical(vec3 cartesian_coord){
 void main()	{
 	float uvfov = tan(fov / 2.0 * DEG_TO_RAD);
 	vec2 uv = screen_to_gl(resolution) * vec2(resolution.x/resolution.y, 1.0);
+	vec3 cam_dir = -1. * cam_pos;
 	vec3 forward = normalize(cam_dir);
 	forward = ROTX(10.*PI / 180.) * forward;
 	forward = normalize(forward);
