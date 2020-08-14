@@ -7,7 +7,7 @@ uniform vec3 cam_up;
 uniform float fov;
 uniform vec3 cam_vel;
 
-uniform vec3 cam_dir = -1. * cam_pos;
+vec3 cam_dir = -1. * cam_pos;
 
 const float PI = 3.141592653589793238462643383279;
 const float DEG_TO_RAD = PI / 180.0;
